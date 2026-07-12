@@ -1,0 +1,674 @@
+/* ── assets/css/tokens.css ── */
+/* ============================================================
+   tokens.css — Design tokens (single source of truth)
+   Aditya Kumar portfolio. No build step: plain CSS custom properties.
+   Change a value here and it updates everywhere. Do not hard-code
+   colors, fonts, or motion in components — reference these vars.
+
+   Brand guardrails (see personality.md): calm, controlled distinctiveness,
+   AI-visual intensity low. BANNED: purple, neon, cyberpunk, clutter.
+   Corners are intentionally sharp (radius 0) except pills.
+   ============================================================ */
+
+:root {
+  /* ---- Color: light theme (default) ---- */
+  --bg:   #FAFAF8;            /* page background (warm off-white) */
+  --ink:  #141412;           /* primary text / strong surfaces   */
+  --mut:  #6E6E66;           /* muted / secondary text           */
+  --ln:   rgba(20,20,18,.14);/* hairline borders & grid dots     */
+  --card: #FFFFFE;           /* card surface                     */
+  --soft: #F1F0EB;           /* soft fill (chips, wells)         */
+  --acc:  #D9482B;           /* accent (rust-red)                */
+  /* Approved accent alternatives (swap --acc to retheme):
+     rust  #D9482B  ·  green #1F6E5C  ·  blue #2456D6           */
+  --acc-ink: #FFFFFF;        /* text on accent background        */
+
+  /* ---- Typography ---- */
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Type scale (px). Display sizes use clamp() in components. */
+  --fs-eyebrow: 11px;   /* mono labels, letter-spaced */
+  --fs-xs: 12px;
+  --fs-sm: 13.5px;
+  --fs-base: 16px;
+  --fs-lg: 20px;
+  --fs-h2: clamp(30px, 4.5vw, 46px);
+  --fs-hero: clamp(54px, 9.5vw, 124px);
+  --fs-contact: clamp(40px, 7vw, 84px);
+
+  --lh-tight: 1.05;
+  --lh-snug: 1.45;
+  --lh-body: 1.6;
+  --tracking-label: .18em;   /* uppercase mono eyebrows */
+  --tracking-tight: -.02em;  /* large headings          */
+
+  /* ---- Spacing scale (px) ---- */
+  --sp-3xs: 4px;
+  --sp-2xs: 8px;
+  --sp-xs: 12px;
+  --sp-sm: 16px;
+  --sp-md: 24px;
+  --sp-lg: 32px;
+  --sp-xl: 48px;
+  --sp-2xl: 68px;   /* section padding (mobile)  */
+  --sp-3xl: 96px;   /* section padding (desktop) */
+
+  /* ---- Layout ---- */
+  --container: 1180px;
+  --gutter: 24px;
+
+  /* ---- Borders / radii / shadow ---- */
+  --border: 1px solid var(--ln);
+  --border-ink: 1px solid var(--ink);
+  --radius-pill: 99px;          /* pills only; everything else is square */
+  --shadow-block: 6px 6px 0 var(--ln);  /* offset "print" shadow (hero motif) */
+
+  /* ---- Motion ---- */
+  --dur: .6s;        /* reveal-on-scroll */
+  --dur-fast: .2s;   /* hovers */
+  --ease: ease;
+
+  /* ---- Layers ---- */
+  --z-nav: 50;
+  --z-cursor-img: 200;   /* floating hover preview */
+  --z-modal: 300;        /* project-preview overlay (above nav + cursor-img) */
+}
+
+/* ---- Color: dark theme ----
+   Applied by adding class "dark" to <html> (the :root element). A tiny
+   pre-paint script in each page's <head> sets it flash-free; main.js
+   toggles it and persists the choice in localStorage. */
+:root.dark {
+  --bg:   #121210;
+  --ink:  #F2F1EC;
+  --mut:  #98978E;
+  --ln:   rgba(242,241,236,.16);
+  --card: #1A1A17;
+  --soft: #1E1E1B;
+  /* --acc stays the same across themes */
+}
+
+/* ---- Root surface (the app wrapper) ---- */
+.site {
+  background: var(--bg);
+  color: var(--ink);
+  /* Clip horizontal overflow WITHOUT creating a scroll container.
+     `overflow-x: hidden` would force overflow-y to compute to `auto`, which
+     turns .site into a scroll container and breaks the nav's position:sticky.
+     `overflow-x: clip` clips the same way but keeps sticky working. */
+  overflow-x: clip;
+}
+
+/* ── assets/css/base.css ── */
+/* ============================================================
+   base.css — Reset + element defaults
+   Foundation layer. Loaded after tokens.css, before components.css.
+   Intentionally minimal: we do NOT reset heading/paragraph margins,
+   because components set spacing explicitly (and use the .m0 utility).
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg, video { max-width: 100%; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--acc);
+  color: var(--acc-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* ── assets/components/layout/layout.css ── */
+/* layout — page scaffolding: container, section, section-head, heading.
+   Edit here to change section rhythm site-wide. */
+.wrap { max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter); box-sizing: border-box; }
+.sec { padding: var(--sp-3xl) 0; border-top: var(--border); }
+.sechead { margin-bottom: 44px; }
+.h2 { font-size: var(--fs-h2); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); line-height: var(--lh-tight); margin: 16px 0 0; }
+
+@media (max-width: 700px) {
+  .sec { padding: var(--sp-2xl) 0; }
+}
+
+/* ── assets/components/eyebrow/eyebrow.css ── */
+/* eyebrow — mono uppercase section label with an accent tick.
+   Usage: <p class="eyebrow"><span class="tick"></span>01 / Section</p> */
+.eyebrow { font-family: var(--font-mono); font-size: var(--fs-eyebrow); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--mut); display: flex; align-items: center; gap: 10px; }
+.tick { width: 8px; height: 8px; background: var(--acc); flex: none; }
+
+/* ── assets/components/button/button.css ── */
+/* button — actions & links: primary (.btn), secondary (.btn2),
+   quiet link (.rlink), ghost toggle (.tbtn). Theme toggle lives in
+   theme-toggle/. Burger lives in nav/. */
+.btn { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-sm); font-weight: var(--fw-semibold); text-decoration: none; background: var(--ink); color: var(--bg); padding: 10px 18px; border: var(--border-ink); }
+.btn:hover { background: var(--acc); border-color: var(--acc); color: #fff; }
+
+.btn2 { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-sm); font-weight: var(--fw-semibold); text-decoration: none; color: var(--ink); padding: 10px 18px; border: var(--border); }
+.btn2:hover { border-color: var(--ink); }
+
+.rlink { font-size: var(--fs-sm); font-weight: var(--fw-medium); text-decoration: none; color: var(--mut); }
+.rlink:hover { color: var(--ink); }
+
+.seemore { margin-top: 28px; }
+.tbtn { background: none; border: var(--border); color: var(--mut); font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; padding: 9px 16px; cursor: pointer; }
+.tbtn:hover { color: var(--ink); border-color: var(--ink); }
+
+/* ── assets/components/theme-toggle/theme-toggle.css ── */
+/* theme-toggle — icon button that flips light/dark. Behavior in main.js;
+   theme tokens in tokens.css (:root.dark). Sun shows in dark, moon in light. */
+.themebtn { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; padding: 0; background: none; border: var(--border); color: var(--ink); cursor: pointer; flex: none; }
+.themebtn:hover { border-color: var(--ink); color: var(--acc); }
+.themebtn svg { width: 16px; height: 16px; display: block; }
+.themebtn .t-sun { display: none; }
+.themebtn .t-moon { display: inline-flex; }
+:root.dark .themebtn .t-sun { display: inline-flex; }
+:root.dark .themebtn .t-moon { display: none; }
+
+/* ── assets/components/pill/pill.css ── */
+/* pill — rounded status chip with a pulsing accent dot.
+   Usage: <span class="pill"><span class="dot"></span>Open to work</span> */
+.pill { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: var(--fs-eyebrow); letter-spacing: .06em; text-transform: uppercase; border: var(--border); padding: 6px 11px; border-radius: var(--radius-pill); white-space: nowrap; }
+.dot { width: 7px; height: 7px; border-radius: var(--radius-pill); background: var(--acc); animation: pulse 2.4s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+
+/* ── assets/components/tag/tag.css ── */
+/* tag — outlined mono label (with .hot accent variant) and its flex row.
+   Usage: <div class="tags"><span class="tag hot">Agentic AI</span>…</div> */
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; border: var(--border); padding: 4px 9px; color: var(--mut); }
+.tag.hot { border-color: var(--acc); color: var(--acc); }
+
+/* ── assets/components/chip/chip.css ── */
+/* chip — soft-filled mono token (skills, stacks) and its flex row.
+   Usage: <div class="chips"><span class="chip">LangChain</span>…</div> */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.chip { font-family: var(--font-mono); font-size: 11.5px; background: var(--soft); padding: 6px 11px; }
+
+/* ── assets/components/placeholder/placeholder.css ── */
+/* placeholder — visible "content to be added" markers. Inline (.ph) and
+   block (.slot). Dashed border so gaps are obvious, never fabricated. */
+.ph { font-family: var(--font-mono); font-size: 12px; color: var(--mut); background: var(--soft); border: 1px dashed var(--ln); padding: 10px 12px; margin-top: 16px; line-height: 1.5; }
+.slot { border: 1px dashed var(--ln); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 40px; margin-top: 20px; text-align: center; }
+
+/* ── assets/components/card/card.css ── */
+/* card — base surface (bg + hairline border). Variants live in their own
+   components (case-study, philosophy, testimonial, beyond, flagship) and
+   compose with .card in markup, e.g. <div class="card cs">. */
+.card { background: var(--card); border: var(--border); }
+
+/* ── assets/components/nav/nav.css ── */
+/* nav — sticky top bar + mobile menu. Includes .logo (also reused in footer).
+   Responsive: links collapse to the burger menu below 700px. */
+.nav { position: sticky; top: 0; z-index: var(--z-nav); background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: var(--border); }
+.navin { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
+.logo { font-family: var(--font-mono); font-weight: var(--fw-semibold); font-size: 14px; letter-spacing: .1em; text-decoration: none; border: var(--border-ink); padding: 5px 9px; }
+.nlinks { display: flex; gap: 26px; }
+.nlink { font-size: var(--fs-sm); font-weight: var(--fw-medium); text-decoration: none; color: var(--mut); }
+.nlink:hover { color: var(--ink); }
+.nright { display: flex; align-items: center; gap: 14px; }
+
+.burger { display: none; background: none; border: var(--border); color: var(--ink); width: 38px; height: 38px; font-size: 16px; cursor: pointer; }
+.mmenu { display: none; flex-direction: column; gap: 0; border-top: var(--border); background: var(--bg); }
+.mlink { padding: 14px 24px; text-decoration: none; font-weight: var(--fw-medium); border-bottom: var(--border); }
+
+@media (max-width: 960px) {
+  .nlinks { display: none; }
+  .pill.navpill { display: none; }
+}
+@media (max-width: 700px) {
+  .burger { display: flex; align-items: center; justify-content: center; }
+  .nright .btn, .nright .rlink { display: none; }
+  .mmenu.open { display: flex; }
+}
+
+/* ── assets/components/hero/hero.css ── */
+/* hero — name block: dot-grid background, display name, sub, CTAs, status pill.
+   The ID-card motif is a separate component (id-card/). */
+.hero { position: relative; padding: 110px 0 90px; background-image: radial-gradient(var(--ln) 1px, transparent 1px); background-size: 26px 26px; }
+.hname { font-size: var(--fs-hero); font-weight: var(--fw-bold); letter-spacing: -.035em; line-height: .98; margin: 22px 0 0; text-wrap: balance; }
+.hsub { font-size: clamp(16px, 1.8vw, 20px); line-height: var(--lh-snug); max-width: 680px; margin: 26px 0 0; color: var(--mut); }
+.hsub .fw6 { color: var(--ink); }
+.hctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; align-items: center; }
+.hpill { margin-top: 30px; }
+
+@media (max-width: 700px) {
+  .hero { padding: 80px 0 70px; }
+}
+
+/* ── assets/components/id-card/id-card.css ── */
+/* id-card — the rotated "ID badge" motif in the hero (monogram, name, role,
+   barcode). Decorative; hidden below 960px. */
+.motif { position: absolute; right: 24px; top: 90px; width: 250px; background: var(--card); border: var(--border-ink); transform: rotate(3deg); box-shadow: var(--shadow-block); }
+.idtop { display: flex; align-items: center; justify-content: space-between; border-bottom: var(--border); padding: 10px 14px; }
+.idlab { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--mut); }
+.idhole { width: 34px; height: 9px; border-radius: var(--radius-pill); background: var(--soft); border: var(--border); }
+.idface { margin: 16px auto 0; width: 110px; height: 110px; border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 38px; font-weight: var(--fw-semibold); letter-spacing: .05em; background: repeating-linear-gradient(45deg, transparent, transparent 6px, var(--soft) 6px, var(--soft) 7px); }
+.idbody { padding: 14px 16px 16px; text-align: center; }
+.idname { font-weight: var(--fw-bold); font-size: 16px; letter-spacing: -.01em; }
+.idrole { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); margin-top: 4px; }
+.idbar { margin: 14px auto 0; height: 26px; width: 150px; background: repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 5px, var(--ink) 5px 8px, transparent 8px 11px); }
+.idfoot { display: flex; align-items: center; justify-content: center; gap: 7px; border-top: var(--border); padding: 8px; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--mut); }
+
+@media (max-width: 960px) {
+  .motif { display: none; }
+}
+
+/* ── assets/components/stats/stats.css ── */
+/* stats — bordered headline-number grid. 5→2→1 columns as width shrinks. */
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); border: var(--border); }
+.stat { padding: 26px 22px; border-right: var(--border); min-width: 0; }
+.stat.last { border-right: none; }
+.snum { font-family: var(--font-mono); font-size: clamp(24px, 2.6vw, 34px); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); }
+.slab { font-size: 12.5px; line-height: var(--lh-snug); color: var(--mut); margin-top: 8px; }
+
+@media (max-width: 960px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-bottom: var(--border); }
+}
+@media (max-width: 700px) {
+  .stats { grid-template-columns: 1fr; }
+  .stat { border-right: none; }
+}
+
+/* ── assets/components/thread/thread.css ── */
+/* thread — large editorial lead statement; .acc2 accents a key phrase. */
+.thread { font-size: clamp(20px, 2.6vw, 30px); line-height: var(--lh-snug); font-weight: var(--fw-medium); letter-spacing: -.01em; max-width: 900px; text-wrap: pretty; }
+.thread .acc2 { color: var(--acc); }
+
+/* ── assets/components/flagship/flagship.css ── */
+/* flagship — the big AI-build card: title/lead, metric grid (.pgrid/.pcell),
+   failure list (.fails/.fail), external links, honest note, pull-quote.
+   Composes with .card and reuses tag/ (.tags) + chip/ (.chips) in markup. */
+.flag { padding: clamp(24px, 4vw, 48px); }
+.ftitle { font-size: clamp(24px, 3vw, 34px); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); margin: 18px 0 0; }
+.fline { font-size: var(--fs-base); line-height: var(--lh-body); color: var(--mut); max-width: 720px; margin: 14px 0 0; }
+
+/* metric grid */
+.pgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--ln); border: var(--border); margin-top: 30px; }
+.pcell { background: var(--card); padding: 18px 16px; }
+.pnum { font-family: var(--font-mono); font-size: 21px; font-weight: var(--fw-semibold); }
+.plab { font-size: 12px; line-height: var(--lh-snug); color: var(--mut); margin-top: 6px; }
+
+/* failure list */
+.fails { margin-top: 36px; }
+.fhead { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); margin-bottom: 14px; }
+.fail { display: grid; grid-template-columns: 44px 1fr; gap: 16px; padding: 16px 0; border-top: var(--border); }
+.fnum { font-family: var(--font-mono); font-size: 13px; color: var(--acc); padding-top: 2px; }
+.fttl { font-weight: var(--fw-semibold); font-size: 15px; }
+.fles { font-size: var(--fs-sm); line-height: var(--lh-snug); color: var(--mut); margin-top: 5px; }
+
+.flinks { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.honest { font-size: 13px; line-height: var(--lh-snug); color: var(--mut); border-left: 2px solid var(--acc); padding: 2px 0 2px 14px; margin-top: 26px; max-width: 640px; font-style: italic; }
+.pull { margin: 30px 0 0; padding: 24px; background: var(--soft); }
+.pq { font-size: 17px; line-height: var(--lh-snug); font-weight: var(--fw-medium); margin: 0; }
+.pa { font-family: var(--font-mono); font-size: 11.5px; color: var(--mut); margin-top: 12px; }
+
+@media (max-width: 960px) {
+  .pgrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+  .pgrid { grid-template-columns: 1fr; }
+}
+
+/* ── assets/components/case-study/case-study.css ── */
+/* case-study — 2-up grid of PM case cards: company/date meta, title,
+   accented result line. Composes with .card and reuses chip/. */
+.cgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.cs { padding: 28px; display: flex; flex-direction: column; gap: 0; }
+.cmeta { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.cco { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); }
+.cttl { font-size: 20px; font-weight: var(--fw-semibold); letter-spacing: -.01em; margin: 14px 0 0; }
+.cres { font-size: 14.5px; margin-top: 8px; color: var(--acc); font-weight: var(--fw-medium); }
+
+@media (max-width: 700px) {
+  .cgrid { grid-template-columns: 1fr; }
+}
+
+/* ── assets/components/cursor-image/cursor-image.css ── */
+/* cursor-image — a floating project preview whose bottom-left corner is pinned
+   to the cursor while hovering a card. Add class "hover-card" to any element and
+   (optionally) data-img="…" (real image) or data-title="…" (placeholder label).
+   Behavior lives in cursor-image.js. Desktop / fine-pointer only (JS guards). */
+.hover-card { cursor: pointer; }
+
+.cursor-img { position: fixed; top: 0; left: 0; z-index: var(--z-cursor-img); pointer-events: none; opacity: 0; transition: opacity .16s ease; will-change: transform; }
+.cursor-img.show { opacity: 1; }
+.cursor-img img { display: block; width: 240px; height: 240px; object-fit: cover; border: var(--border-ink); box-shadow: var(--shadow-block); background: var(--card); }
+
+/* ── assets/components/typetext/typetext.css ── */
+/* typetext — type-once "typewriter" effect. Add [data-typetext] to any element;
+   typetext.js types its text out char-by-char on load and stops (no delete/loop).
+   The real text stays in the HTML (SEO / no-JS / reduced-motion all show it in full).
+   Optional attrs: data-type-speed (ms/char), data-type-delay (ms), data-type-char,
+   data-type-cursor="keep" (keep the cursor after typing). Behavior in typetext.js. */
+.typetext-cursor {
+  display: inline-block;
+  margin-left: .04em;
+  color: var(--acc);
+  font-weight: var(--fw-regular);
+  animation: typetext-blink 1s steps(1, end) infinite;
+}
+.typetext-cursor.done {
+  animation: none;
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+@keyframes typetext-blink {
+  0%, 50% { opacity: 1; }
+  50.001%, 100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .typetext-cursor { animation: none; }
+}
+
+/* ── assets/components/timeline/timeline.css ── */
+/* timeline — vertical work/education track. .titem.now marks the latest
+   entry (accent dot); .ttag.edu marks education rows. */
+.tl { position: relative; padding-left: 32px; border-left: var(--border); display: flex; flex-direction: column; gap: 34px; }
+.titem { position: relative; }
+.tdot { position: absolute; left: -37px; top: 5px; width: 9px; height: 9px; background: var(--bg); border: 2px solid var(--ink); border-radius: var(--radius-pill); }
+.titem.now .tdot { background: var(--acc); border-color: var(--acc); }
+.tyr { font-family: var(--font-mono); font-size: 12px; color: var(--mut); display: flex; gap: 10px; align-items: center; }
+.ttag { font-size: 9.5px; letter-spacing: .12em; border: var(--border); padding: 2px 6px; }
+.ttag.edu { color: var(--acc); border-color: var(--acc); }
+.trole { font-size: 17px; font-weight: var(--fw-semibold); margin-top: 7px; }
+.tdesc { font-size: var(--fs-sm); color: var(--mut); margin-top: 4px; line-height: var(--lh-snug); max-width: 620px; }
+
+/* ── assets/components/philosophy/philosophy.css ── */
+/* philosophy — 3-up grid of principle cards (index, title, body).
+   .pcard is also reused by the testimonial component. Composes with .card. */
+.pgrid2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.pcard { padding: 26px; display: flex; flex-direction: column; gap: 0; }
+.pidx { font-family: var(--font-mono); font-size: 12px; color: var(--acc); }
+.pttl { font-size: 18px; font-weight: var(--fw-semibold); margin: 12px 0 0; letter-spacing: -.01em; }
+.pbody { font-size: var(--fs-sm); line-height: var(--lh-body); color: var(--mut); margin-top: 8px; }
+
+@media (max-width: 960px) {
+  .pgrid2 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+  .pgrid2 { grid-template-columns: 1fr; }
+}
+
+/* ── assets/components/testimonial/testimonial.css ── */
+/* testimonial — 2-up grid of equal-height quote cards. Each card = a fixed-height
+   scrollable quote body (.tbody, scrollbar always shown) + a fixed-height pinned
+   attribution footer (.pa): line 1 = name (accent) + how they know Aditya,
+   line 2 = current designation (.pa-role, muted). Cards reuse .pcard (philosophy/)
+   for surface; rules are scoped under .tgrid so philosophy cards stay unaffected. */
+.tgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: start; }
+
+/* trimmed bottom padding; card height comes from the fixed .tbody + .pa below,
+   so every card ends up the same height */
+.tgrid .card { padding-bottom: 16px; }
+
+/* scrollable quote region — fixed 200px tall, scrollbar always visible.
+   Defining ::-webkit-scrollbar forces a persistent (non-overlay) bar even on
+   macOS. NB: a custom `scrollbar-color` routes Chromium to the standard,
+   auto-hiding overlay scrollbar — so we leave it `auto` and color the bar via
+   the ::-webkit-scrollbar-* pseudos below (Firefox falls back to its default). */
+.tbody { height: 200px; overflow-y: scroll; padding-right: 14px; }
+.tbody::-webkit-scrollbar { width: 11px; }
+/* track: a single hairline down the centre, matching the card dividers */
+.tbody::-webkit-scrollbar-track { background: linear-gradient(to right, transparent calc(50% - 0.5px), var(--ln) calc(50% - 0.5px), var(--ln) calc(50% + 0.5px), transparent calc(50% + 0.5px)); }
+/* thumb: a solid maroon pill riding the line. Filling the whole (content-
+   proportional) thumb — instead of a centred 60px band — lets the bar reach the
+   very top at scroll-top and the very bottom at scroll-bottom. min-height is a
+   floor; transparent side-borders + padding-box clip slim it to a 5px pill so
+   the hairline track shows on either side. */
+.tbody::-webkit-scrollbar-thumb {
+  min-height: 60px;
+  background: var(--acc);
+  background-clip: padding-box;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+}
+
+.tq { font-size: 15px; line-height: var(--lh-body); margin: 0; }
+.tq + .tq, .tq-list + .tq { margin-top: 12px; }        /* stacked quote paragraphs */
+.tq-list { margin: 10px 0 0; padding-left: 18px; font-size: 15px; line-height: var(--lh-body); display: flex; flex-direction: column; gap: 4px; }
+
+/* pinned footer (person details) with hairline divider. Fixed min-height so the
+   bottom section aligns across all cards regardless of 1- vs 2-line content.
+   Two lines: name (accent) + how they know Aditya, then current designation. */
+.tgrid .pa { flex: none; margin-top: 14px; padding-top: 14px; border-top: var(--border); min-height: 72px; line-height: 1.5; }
+.tgrid .pa-name { color: var(--acc); font-weight: var(--fw-semibold); }
+.tgrid .pa-role { display: block; margin-top: 4px; color: var(--mut); }
+
+@media (max-width: 700px) {
+  .tgrid { grid-template-columns: 1fr; }
+}
+
+/* ── assets/components/beyond/beyond.css ── */
+/* beyond — "beyond work" 2-up grid: mono heading, recommendation list,
+   note text. Composes with .card. */
+.beyond { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.bcard { padding: 26px; }
+.bhead { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); }
+.blist { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 10px; }
+.bnote { font-size: 14px; line-height: var(--lh-body); color: var(--mut); margin: 14px 0 0; }
+.bnote .fw6 { color: var(--ink); }
+
+@media (max-width: 700px) {
+  .beyond { grid-template-columns: 1fr; }
+}
+
+/* ── assets/components/contact/contact.css ── */
+/* contact — closing section: oversized headline, CTA row, labelled detail list. */
+.contact { padding: 110px 0; }
+.cbig { font-size: var(--fs-contact); font-weight: var(--fw-bold); letter-spacing: -.03em; line-height: 1; margin: 18px 0 0; }
+.crow { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 38px; align-items: center; }
+.cdetails { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 44px; }
+.cd { min-width: 0; }
+.cdl { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--mut); }
+.cdv { font-size: 14.5px; font-weight: var(--fw-medium); margin-top: 6px; word-break: break-word; }
+.cdv a { text-decoration: none; }
+.cdv a:hover { color: var(--acc); }
+
+/* ── assets/components/footer/footer.css ── */
+/* footer — closing bar: logo (from nav/), quick links, mono signature. */
+.foot { border-top: var(--border); padding: 28px 0; }
+.footin { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+.fsig { font-family: var(--font-mono); font-size: 11.5px; color: var(--mut); }
+.flnks { display: flex; gap: 18px; }
+
+/* ── assets/components/modal/modal.css ── */
+/* modal — project-preview overlay. Clicking a [data-modal="key"] trigger opens a
+   dialog whose reading column ("doc") is cloned from <template id="tmpl-key">.
+   Same visual language as the site: card surface, ink hairline, sharp corners,
+   print offset shadow. The window is intentionally WIDER than the doc column
+   inside it, giving calm side gutters. Behavior lives in modal.js.
+   Dims + scroll-locks the page behind. Sharp corners everywhere (brand). */
+
+/* dimming layer — the page behind gets slightly darker */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: var(--z-modal);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: clamp(16px, 5vh, 64px) var(--gutter);
+  background: rgba(10, 10, 8, .46);
+  -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+  opacity: 0; visibility: hidden;
+  transition: opacity var(--dur-fast) var(--ease), visibility var(--dur-fast) var(--ease);
+}
+:root.dark .modal-overlay { background: rgba(0, 0, 0, .62); }
+.modal-overlay.open { opacity: 1; visibility: visible; }
+
+/* the window — wider than the doc column it holds */
+.modal-window {
+  position: relative;
+  width: 100%; max-width: 920px; max-height: 90vh;
+  display: flex; flex-direction: column;
+  background: var(--card); border: var(--border-ink);
+  box-shadow: 10px 10px 0 var(--ln);
+  transform: translateY(12px) scale(.985);
+  transition: transform var(--dur-fast) var(--ease);
+}
+.modal-overlay.open .modal-window { transform: none; }
+
+/* sticky header: eyebrow + title on the left, cross button on the right */
+.modal-bar {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 16px 20px; background: var(--card); border-bottom: var(--border);
+}
+.modal-eyebrow { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); }
+.modal-title { font-size: 16px; font-weight: var(--fw-semibold); letter-spacing: -.01em; margin-top: 3px; }
+
+/* the cross button */
+.modal-close {
+  flex: none; width: 40px; height: 40px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: none; border: var(--border); color: var(--ink); cursor: pointer;
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.modal-close:hover { background: var(--acc); border-color: var(--acc); color: #fff; }
+.modal-close svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; }
+
+/* scroll area */
+.modal-scroll { overflow-y: auto; overscroll-behavior: contain; }
+
+/* the doc — a narrower reading column, centered, so the window is
+   visibly wider than the page it holds */
+.modal-doc { max-width: 660px; margin: 0 auto; padding: 40px 32px 56px; }
+.modal-doc .m-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.modal-doc h1 { font-size: clamp(26px, 4vw, 34px); font-weight: var(--fw-bold); letter-spacing: -.02em; line-height: 1.1; margin: 0 0 10px; }
+.modal-doc .m-sub { font-size: 15px; color: var(--mut); line-height: 1.6; margin: 0 0 6px; }
+.modal-doc h2 { font-size: 19px; font-weight: var(--fw-semibold); letter-spacing: -.01em; margin: 34px 0 10px; }
+.modal-doc p { font-size: 15px; line-height: 1.65; margin: 0 0 14px; }
+.modal-doc ul { margin: 0 0 14px; padding-left: 18px; }
+.modal-doc li { font-size: 15px; line-height: 1.6; margin: 0 0 7px; }
+.modal-doc strong { font-weight: var(--fw-semibold); }
+.modal-doc .acc { color: var(--acc); font-weight: var(--fw-medium); }
+.modal-doc code { font-family: var(--font-mono); font-size: 12.5px; background: var(--soft); padding: 1px 6px; border: 1px solid var(--ln); }
+.modal-doc pre { background: var(--soft); border: var(--border); padding: 14px 16px; overflow-x: auto; margin: 0 0 16px; }
+.modal-doc pre code { background: none; border: none; padding: 0; font-size: 12px; line-height: 1.7; white-space: pre; }
+.modal-doc blockquote { margin: 0 0 16px; padding: 4px 0 4px 16px; border-left: 2px solid var(--acc); font-size: 15px; line-height: 1.6; }
+
+/* metric grid (same look as the flagship performance cells) */
+.modal-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--ln); border: var(--border); margin: 6px 0 20px; }
+.modal-metric { background: var(--card); padding: 16px 18px; }
+.modal-metric .m-num { font-family: var(--font-mono); font-size: 22px; font-weight: var(--fw-semibold); color: var(--acc); letter-spacing: -.01em; }
+.modal-metric .m-lab { font-size: 12.5px; color: var(--mut); line-height: 1.45; margin-top: 6px; }
+
+.modal-doc .m-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; padding-top: 22px; border-top: var(--border); }
+
+/* figure — a real product artifact (screenshot), framed like the site's cards */
+.modal-doc .m-figure { margin: 8px 0 22px; }
+.modal-doc .m-figure img { display: block; width: 100%; height: auto; border: var(--border-ink); box-shadow: 8px 8px 0 var(--ln); }
+/* phone variant — tall mobile mock shown at phone width, centered */
+.modal-doc .m-figure.phone { max-width: 290px; margin-left: auto; margin-right: auto; }
+.modal-doc .m-cap { font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; color: var(--mut); line-height: 1.5; margin: 12px 2px 18px; }
+
+/* doc-authorship / provenance note — signals "I wrote the strategy", not just "ran a test" */
+.modal-doc .m-note { display: flex; gap: 12px; background: var(--soft); border: var(--border); border-left: 2px solid var(--acc); padding: 14px 16px; margin: 0 0 18px; }
+.modal-doc .m-note .m-note-k { font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--acc); flex: none; padding-top: 2px; }
+.modal-doc .m-note p { font-size: 13.5px; line-height: 1.55; margin: 0; color: var(--ink); }
+
+/* comparison table — before/after channel shift, experiment phases, etc. */
+.modal-doc .m-table { width: 100%; border-collapse: collapse; border: var(--border); margin: 4px 0 20px; font-size: 13px; }
+.modal-doc .m-table th, .modal-doc .m-table td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--ln); line-height: 1.4; }
+.modal-doc .m-table thead th { font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--mut); font-weight: var(--fw-medium); }
+.modal-doc .m-table td + td, .modal-doc .m-table th + th { border-left: 1px solid var(--ln); }
+.modal-doc .m-table tbody tr:last-child td { border-bottom: none; }
+.modal-doc .m-table .num { font-family: var(--font-mono); }
+.modal-doc .m-table .up { color: var(--acc); }
+
+/* horizontal bar chart — recovery-decile churn (real data, redrawn clean) */
+.modal-doc .m-chart { border: var(--border); padding: 16px 18px; margin: 4px 0 8px; display: grid; gap: 9px; }
+.modal-doc .m-row { display: grid; grid-template-columns: 76px 1fr 40px; align-items: center; gap: 10px; }
+.modal-doc .m-row .m-k { font-family: var(--font-mono); font-size: 11px; color: var(--mut); }
+.modal-doc .m-bar { height: 14px; background: var(--soft); border: 1px solid var(--ln); position: relative; }
+.modal-doc .m-bar span { display: block; height: 100%; background: var(--mut); }
+.modal-doc .m-row.hot .m-bar span { background: var(--acc); }
+.modal-doc .m-row .m-v { font-family: var(--font-mono); font-size: 11.5px; text-align: right; }
+.modal-doc .m-row.hot .m-v { color: var(--acc); font-weight: var(--fw-semibold); }
+
+/* phased journey — a compact vertical timeline inside the doc */
+.modal-doc .m-phases { list-style: none; padding: 0; margin: 6px 0 20px; }
+.modal-doc .m-phases li { position: relative; padding: 0 0 20px 22px; margin: 0; border-left: 1px solid var(--ln); }
+.modal-doc .m-phases li:last-child { padding-bottom: 0; }
+.modal-doc .m-phases li::before { content: ""; position: absolute; left: -5px; top: 3px; width: 9px; height: 9px; background: var(--acc); border: 2px solid var(--card); }
+.modal-doc .m-ph-k { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--mut); }
+.modal-doc .m-ph-t { font-size: 14.5px; font-weight: var(--fw-semibold); margin: 2px 0 4px; letter-spacing: -.01em; }
+.modal-doc .m-ph-t .m-when { font-family: var(--font-mono); font-weight: var(--fw-regular); font-size: 11px; color: var(--mut); margin-left: 8px; letter-spacing: 0; }
+.modal-doc .m-phases p { font-size: 13.5px; line-height: 1.55; margin: 0; color: var(--mut); }
+.modal-doc .m-phases p .acc { color: var(--acc); }
+
+/* affordance on a clickable card */
+.card[data-modal] { cursor: pointer; }
+.cmore { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; }
+.card[data-modal]:hover .cmore { color: var(--acc); }
+
+/* mobile: window fills the screen, gutters collapse */
+@media (max-width: 640px) {
+  .modal-overlay { padding: 0; }
+  .modal-window { max-width: 100%; max-height: 100vh; height: 100%; box-shadow: none; border: none; }
+  .modal-doc { padding: 28px 20px 44px; }
+  .modal-metrics { grid-template-columns: 1fr; }
+  .modal-doc .m-figure img, .modal-doc .m-figure { box-shadow: 5px 5px 0 var(--ln); }
+  .modal-doc .m-table { font-size: 12px; }
+  .modal-doc .m-table th, .modal-doc .m-table td { padding: 8px 9px; }
+  .modal-doc .m-row { grid-template-columns: 64px 1fr 36px; gap: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-overlay, .modal-window { transition: none; }
+  .modal-window { transform: none; }
+}
+
+/* ── assets/css/utilities.css ── */
+/* ============================================================
+   utilities.css — Small single-purpose helpers
+   Loaded LAST so utilities can win specificity ties with components.
+   Keep these atomic and rare; prefer component classes for anything
+   with more than one declaration.
+   ============================================================ */
+
+/* Text */
+.mono { font-family: var(--font-mono); }
+.mut  { color: var(--mut); }
+.acc  { color: var(--acc); }
+.fw6  { font-weight: var(--fw-semibold); }
+.fs11 { font-size: 11px; }
+.fs12 { font-size: 12px; }
+.fs13 { font-size: 13px; }
+
+/* Layout */
+.m0     { margin: 0; }
+.posrel { position: relative; }
+
+/* Reveal-on-scroll (JS adds .in when the element enters the viewport).
+   Under reduced-motion we never hide content — no opacity:0 rule applies. */
+@media (prefers-reduced-motion: no-preference) {
+  .rv {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+  .rv.in { opacity: 1; transform: none; }
+}

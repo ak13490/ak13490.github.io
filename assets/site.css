@@ -428,11 +428,16 @@ a { color: inherit; }
 :root { --ec-gold: #E0A63C; --ec-qfill: #F9E2DB; --ec-qline: #E7E5DF; }
 :root.dark { --ec-gold: #E0A63C; --ec-qfill: #33221D; --ec-qline: #2E2E29; }
 
-.ec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; align-items: start; }
+/* items stretch (grid default) so both cards in a row share the taller card's
+   height; the attribution block is pushed to the card bottom via .ec-rule's
+   margin-top:auto, so stretched cards don't end in floating whitespace */
+.ec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
 
 .ec {
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   background: var(--card);
   border: 1px solid var(--ln);
   border-radius: 4px;
@@ -452,11 +457,14 @@ a { color: inherit; }
 
 .ec-context { border-left: 3px solid var(--ec-gold); padding-left: 18px; margin: 0 0 26px; font-style: italic; font-weight: var(--fw-semibold); font-size: 20px; line-height: 1.34; letter-spacing: -.01em; color: var(--ink); }
 
+.ec-quote { margin-bottom: 28px; }
 .ec-quote p { font-style: italic; font-size: 17px; line-height: 1.72; color: var(--ink); margin: 0 0 14px; }
 .ec-quote p:last-child { margin-bottom: 0; }
 .ec-quote ul { font-style: italic; font-size: 17px; line-height: 1.6; color: var(--ink); margin: 0 0 14px; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
 
-.ec-rule { border-top: 1px dashed var(--ln); margin: 28px 0 20px; }
+/* margin-top:auto pins the attribution block to the card bottom when the card
+   is stretched taller than its content (the 28px minimum gap lives on .ec-quote) */
+.ec-rule { border-top: 1px dashed var(--ln); margin: auto 0 20px; }
 
 .ec-name { font-weight: var(--fw-bold); font-size: 15px; letter-spacing: -.01em; color: var(--acc); }
 .ec-role { font-size: 13px; color: var(--mut); margin-top: 5px; line-height: 1.5; }

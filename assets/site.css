@@ -267,7 +267,12 @@ a { color: inherit; }
 .idtop { display: flex; align-items: center; justify-content: space-between; border-bottom: var(--border); padding: 10px 14px; }
 .idlab { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--mut); }
 .idhole { width: 34px; height: 9px; border-radius: var(--radius-pill); background: var(--soft); border: var(--border); }
-.idface { margin: 16px auto 0; width: 110px; height: 110px; border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 38px; font-weight: var(--fw-semibold); letter-spacing: .05em; background: repeating-linear-gradient(45deg, transparent, transparent 6px, var(--soft) 6px, var(--soft) 7px); }
+.idface { margin: 16px auto 0; width: 110px; height: 110px; border: 1.5px solid var(--ink); overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 38px; font-weight: var(--fw-semibold); letter-spacing: .05em; background: repeating-linear-gradient(45deg, transparent, transparent 6px, var(--soft) 6px, var(--soft) 7px); }
+/* badge headshot — light-bg photo in light mode, charcoal-bg photo in dark mode */
+.idface img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.idface .hs-dark { display: none; }
+:root.dark .idface .hs-light { display: none; }
+:root.dark .idface .hs-dark { display: block; }
 .idbody { padding: 14px 16px 16px; text-align: center; }
 .idname { font-weight: var(--fw-bold); font-size: 16px; letter-spacing: -.01em; }
 .idrole { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); margin-top: 4px; }

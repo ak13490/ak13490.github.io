@@ -22,11 +22,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <!-- Design system: order matters (tokens → base → components → utilities) -->
-<link rel="stylesheet" href="assets/site.css?v=2cc102af">
+<link rel="stylesheet" href="assets/site.css?v=920173c6">
 <script src="assets/js/main.js?v=2cf64ccf" defer></script>
 <script src="assets/js/cursor-image.js?v=07489d1a" defer></script>
 <script src="assets/js/modal.js?v=be447c4f" defer></script>
 <script src="assets/js/typetext.js?v=5ef3d9c2" defer></script>
+<script src="assets/js/lanyard.js?v=df890a5d" defer></script>
 </head>
 <body>
 <div class="site">
@@ -52,7 +53,15 @@
 </nav>
 
 <header class="hero" id="top"><div class="wrap posrel">
-<div class="motif" aria-hidden="true"><div class="idtop"><span class="idlab">ID · Product</span><span class="idhole"></span></div><div class="idface"><img class="hs-light" src="assets/img/headshot-light-tall.webp" alt=""><img class="hs-dark" src="assets/img/headshot-dark-tall.webp" alt=""></div><div class="idbody"><div class="idname">Aditya Kumar</div><div class="idrole">Lead PM · AI Builder</div><div class="idbar"></div></div></div>
+<div class="lan-rig" id="lanRig" aria-hidden="true">
+<div class="lan-band" id="lanBand"><span>Aditya Kumar · Product · Aditya Kumar</span></div>
+<div class="lan-clip"></div>
+<div class="lan-card" id="lanCard">
+<div class="idtop"><span class="idlab">ID · Product</span><span class="idhole"></span></div>
+<div class="idface"><img class="hs-light" src="assets/img/headshot-light-tall.webp" alt="" draggable="false"><img class="hs-dark" src="assets/img/headshot-dark-tall.webp" alt="" draggable="false"></div>
+<div class="idbody"><div class="idname">Aditya Kumar</div><div class="idrole">Lead PM · AI Builder</div><div class="idbar"></div></div>
+</div>
+</div>
 <p class="eyebrow m0"><span class="tick"></span>Product Leader · AI Product Builder</p>
 <h1 class="hname" data-typetext data-type-speed="105" data-type-delay="350">Aditya Kumar</h1>
 <p class="hsub">Lead Product Manager with <span class="fw6">8+ years</span> turning messy problems into shipped, high-impact products across gaming, EdTech, and OTT. Now building <span class="fw6">agentic AI end-to-end</span> — not reviewing vendor decks, shipping working systems.</p>

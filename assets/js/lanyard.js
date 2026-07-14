@@ -13,7 +13,7 @@
   var band = document.getElementById('lanBand');
   var card = document.getElementById('lanCard');
 
-  var L = 160;                        // band rest length (px)
+  var L = 220;                        // band rest length (px) — pivot is at page top, 60px higher
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
     rig.style.transform = 'rotate(0.05rad)';
     return;
@@ -38,7 +38,7 @@
   var G = 2300;                       // gravity px/s²
   var K_ROPE = 130, C_ROPE = 10;      // band stiffness / damping (taut only)
   var DRAG = 1.1;                     // air drag
-  var MAXLEN = 400, MINLEN = 60;      // visual band clamps
+  var MAXLEN = 460, MINLEN = 60;      // visual band clamps
   var MAXTHROW = 1600;                // release speed cap px/s
 
   // ---- drag ----

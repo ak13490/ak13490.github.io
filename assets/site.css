@@ -531,6 +531,17 @@ a { color: inherit; }
 .bnote { font-size: 14px; line-height: var(--lh-body); color: var(--mut); margin: 14px 0 0; }
 .bnote .fw6 { color: var(--ink); }
 
+/* decorative motif inside a bcard (e.g. the Family ID tag) — themes via tokens.
+   .brow lays text + motif side by side (hero echo: words left, ID card right);
+   stacks on very narrow cards. */
+.brow { display: flex; gap: 18px; align-items: flex-start; }
+.brow .bnote { flex: 1; }
+.bmotif { display: block; flex: none; margin: 14px 0 0; max-width: 100%; }
+@media (max-width: 480px) {
+  .brow { flex-direction: column; }
+  .brow .bmotif { margin-top: 4px; }
+}
+
 /* CTA that opens the "full list" modal (reuses the modal component via data-modal) */
 .bmore { margin-top: 16px; background: none; border: none; padding: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); display: inline-flex; align-items: center; gap: 6px; }
 .bmore:hover { color: var(--acc); }

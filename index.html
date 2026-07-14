@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <!-- Design system: order matters (tokens → base → components → utilities) -->
-<link rel="stylesheet" href="assets/site.css?v=139fcf22">
+<link rel="stylesheet" href="assets/site.css?v=6389fe07">
 <script src="assets/js/main.js?v=2cf64ccf" defer></script>
 <script src="assets/js/cursor-image.js?v=07489d1a" defer></script>
 <script src="assets/js/modal.js?v=11345dd3" defer></script>
@@ -216,7 +216,24 @@
 <div class="beyond">
 <div class="card bcard rv"><div class="bhead">Anime I recommend</div><ul class="blist"><li class="m0"><span class="fw6">Naruto Shippuden</span> <span class="mut">— hard work, loyalty, and sacrifice; honour earned, not inherited. Best watched right after Naruto.</span></li><li class="m0"><span class="fw6">Vinland Saga</span> <span class="mut">— a patient arc from revenge to purpose; what you build outlasts what you conquer.</span></li><li class="m0"><span class="fw6">Haikyu!!</span> <span class="mut">— the joy of marginal gains and a team greater than the sum of its players.</span></li></ul><button class="bmore" data-modal="anime-all" type="button">See the full list <span aria-hidden="true">→</span></button></div>
 <div class="card bcard rv"><div class="bhead">Books I recommend</div><ul class="blist"><li class="m0"><span class="fw6">Mistborn</span> <span class="mut">by Brandon Sanderson — the most satisfying magic system I've ever read, wrapped in a proper page-turner.</span></li><li class="m0"><span class="fw6">The Boy, the Mole, the Fox and the Horse</span> <span class="mut">by Charlie Mackesy — kindness, courage, and asking for help, in a few honest lines.</span></li><li class="m0"><span class="fw6">Tuesdays with Morrie</span> <span class="mut">by Mitch Albom — a dying mentor on what actually matters; perspective over hustle.</span></li></ul><button class="bmore" data-modal="books-all" type="button">See the full list <span aria-hidden="true">→</span></button></div>
-<div class="card bcard rv"><div class="bhead">Family</div><div class="ph">[FAMILY_NOTE — optional, a brief warm human note] — to be added —</div></div>
+<div class="card bcard rv"><div class="bhead">Family</div>
+<div class="brow">
+<p class="bnote">Married to <span class="fw6">Anjana</span>, a paediatric surgeon, and dad to <span class="fw6">Aarush</span> (born 2025) — one of them heals kids for a living; the other is busy being one.</p>
+<svg class="bmotif" viewBox="0 0 132 96" width="118" height="86" aria-hidden="true">
+<rect x="9" y="9" width="117" height="81" fill="var(--ln)"/>
+<rect x="3" y="3" width="117" height="81" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5"/>
+<rect x="98" y="10" width="16" height="5" fill="var(--soft)" stroke="var(--ink)" stroke-width="1"/>
+<circle cx="34" cy="32" r="7" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+<path d="M20 62 q14 -18 28 0" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+<circle cx="68" cy="35" r="6" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+<path d="M56 62 q12 -15 24 0" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+<circle cx="97" cy="45" r="4" fill="var(--acc)"/>
+<path d="M89 62 q8 -10 16 0" fill="none" stroke="var(--acc)" stroke-width="1.6"/>
+<line x1="14" y1="62" x2="110" y2="62" stroke="var(--ln)" stroke-width="1"/>
+<circle cx="15" cy="76" r="1.8" fill="var(--acc)"/>
+<text x="21" y="79" font-family="'JetBrains Mono',monospace" font-size="7" letter-spacing="1.4" fill="var(--mut)">EST · 2025</text>
+</svg>
+</div></div>
 <div class="card bcard rv"><div class="bhead">Giving back — Bhumi NGO · Kanini Project</div><p class="bnote">City-level ops coordinator across <span class="fw6">6 centers, 122 children/year</span>. Taught 30 students weekly for a year — <span class="fw6">85% scored 75%+</span> in the NIIT exam.</p></div>
 </div>
 </div></section>
@@ -506,7 +523,29 @@
     <li><span class="fw6">Mistborn</span> <span class="mut">by Brandon Sanderson — the most satisfying magic system I've ever read.</span></li>
     <li><span class="fw6">The Boy, the Mole, the Fox and the Horse</span> <span class="mut">by Charlie Mackesy — kindness, courage, and asking for help.</span></li>
     <li><span class="fw6">Tuesdays with Morrie</span> <span class="mut">by Mitch Albom — a dying mentor on what actually matters.</span></li>
-    <!-- Add more titles below in this exact format:
+  </ul>
+  <h2>Fantasy</h2>
+  <ul>
+    <li><span class="fw6">The Stormlight Archive</span> <span class="mut">by Brandon Sanderson — epic fantasy at full scale; journey before destination.</span></li>
+    <li><span class="fw6">Warbreaker</span> <span class="mut">by Brandon Sanderson — colour-fuelled magic and the best sarcastic sword in fantasy.</span></li>
+    <li><span class="fw6">The Lord of the Rings</span> <span class="mut">by J.R.R. Tolkien — the blueprint every fantasy world since is measured against.</span></li>
+    <li><span class="fw6">Harry Potter</span> <span class="mut">by J.K. Rowling — still the easiest world to disappear into.</span></li>
+  </ul>
+  <h2>Self-help</h2>
+  <ul>
+    <li><span class="fw6">The Midnight Library</span> <span class="mut">by Matt Haig — a kinder way to think about regret and the lives you didn't live.</span></li>
+    <li><span class="fw6">Before the Coffee Gets Cold</span> <span class="mut">by Toshikazu Kawaguchi — what you'd say if you could go back, knowing nothing would change.</span></li>
+    <li><span class="fw6">Bhagavad Gita</span> <span class="mut">— underrated; teaches a lot. Not for everyone.</span></li>
+  </ul>
+  <h2>Fiction</h2>
+  <ul>
+    <li><span class="fw6">The Song of Achilles</span> <span class="mut">by Madeline Miller — the Iliad retold as a love story; quietly devastating.</span></li>
+    <li><span class="fw6">This Is How You Lose the Time War</span> <span class="mut">by Amal El-Mohtar &amp; Max Gladstone — love letters across a war through time; prose like poetry.</span></li>
+    <li><span class="fw6">The Time Machine</span> <span class="mut">by H.G. Wells — the original time-travel story, still unsettling.</span></li>
+    <li><span class="fw6">Great Expectations</span> <span class="mut">by Charles Dickens — on growing up, and what money does to it.</span></li>
+    <li><span class="fw6">The Alchemist</span> <span class="mut">by Paulo Coelho — a fable about following your own path; half self-help, and that's fine.</span></li>
+    <li><span class="fw6">The Da Vinci Code</span> <span class="mut">by Dan Brown — pure page-turning fun.</span></li>
+    <!-- Add more titles in this exact format:
     <li><span class="fw6">Title</span> <span class="mut">by Author — short note.</span></li> -->
   </ul>
 </template>

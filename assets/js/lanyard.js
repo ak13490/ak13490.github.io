@@ -1,9 +1,12 @@
 /* lanyard.js — rope physics for the hero badge (see lanyard/lanyard.css).
    The badge attachment point is a 2D particle on a band: gravity pulls it,
    the band springs back only when taut (slack = free fall), drag follows the
-   pointer and carries throw velocity on release. Self-guarding IIFE; no-ops
-   without #lanRig; honors prefers-reduced-motion; sim runs only while the
-   rig is in the viewport. */
+   pointer and carries throw velocity on release.
+
+   All positions are PAGE coordinates (pageX/pageY), never viewport — so
+   scrolling can't desync the particle from the anchor. Self-guarding IIFE;
+   no-ops without #lanRig; honors prefers-reduced-motion; sim runs only while
+   the rig is on screen. */
 (function () {
   var rig = document.getElementById('lanRig');
   if (!rig) return;
@@ -16,20 +19,19 @@
     return;
   }
 
-  // ---- anchor: the rig's rotation origin (top center), viewport coords ----
+  // ---- anchor: the rig's rotation origin (top center), PAGE coords ----
   var A = null;
   function measureAnchor() {
     var t = rig.style.transform;
     rig.style.transform = 'rotate(0rad)';
     var r = rig.getBoundingClientRect();
-    A = { x: r.left + r.width / 2, y: r.top };
+    A = { x: r.left + r.width / 2 + window.scrollX, y: r.top + window.scrollY };
     rig.style.transform = t;
   }
   measureAnchor();
-  addEventListener('resize', measureAnchor);
-  addEventListener('scroll', measureAnchor, { passive: true });
+  addEventListener('resize', measureAnchor);   // layout changes only — scroll can't move a page-coord anchor
 
-  var P = { x: A.x, y: A.y + L };     // particle: badge attachment point
+  var P = { x: A.x, y: A.y + L };     // particle: badge attachment point (page coords)
   var V = { x: 0, y: 0 };
 
   // ---- constants ----
@@ -37,19 +39,21 @@
   var K_ROPE = 130, C_ROPE = 10;      // band stiffness / damping (taut only)
   var DRAG = 1.1;                     // air drag
   var MAXLEN = 400, MINLEN = 60;      // visual band clamps
+  var MAXTHROW = 1600;                // release speed cap px/s
 
   // ---- drag ----
   var dragging = false, grab = { x: 0, y: 0 }, hist = [];
   card.addEventListener('pointerdown', function (e) {
     measureAnchor();
     dragging = true;
-    grab.x = e.clientX - P.x; grab.y = e.clientY - P.y;
+    V.x = 0; V.y = 0;                 // kill stale momentum the moment you grab
+    grab.x = e.pageX - P.x; grab.y = e.pageY - P.y;
     hist = [{ x: P.x, y: P.y, t: performance.now() }];
     card.setPointerCapture(e.pointerId); e.preventDefault();
   });
   card.addEventListener('pointermove', function (e) {
     if (!dragging) return;
-    P.x = e.clientX - grab.x; P.y = e.clientY - grab.y;
+    P.x = e.pageX - grab.x; P.y = e.pageY - grab.y;
     hist.push({ x: P.x, y: P.y, t: performance.now() });
     if (hist.length > 6) hist.shift();
     render();
@@ -57,15 +61,22 @@
   function release() {
     if (!dragging) return;
     dragging = false;
-    if (hist.length >= 2) {
-      var a = hist[0], b = hist[hist.length - 1];
+    // throw velocity from RECENT pointer history only (a pause = no throw)
+    var now = performance.now();
+    var recent = hist.filter(function (h) { return now - h.t < 120; });
+    if (recent.length >= 2) {
+      var a = recent[0], b = recent[recent.length - 1];
       var dt = Math.max(0.016, (b.t - a.t) / 1000);
-      V.x = (b.x - a.x) / dt * 0.9;
-      V.y = (b.y - a.y) / dt * 0.9;
+      var vx = (b.x - a.x) / dt * 0.9, vy = (b.y - a.y) / dt * 0.9;
+      var s = Math.sqrt(vx * vx + vy * vy);
+      if (s > MAXTHROW) { vx *= MAXTHROW / s; vy *= MAXTHROW / s; }
+      V.x = vx; V.y = vy;
     }
   }
   card.addEventListener('pointerup', release);
   card.addEventListener('pointercancel', release);
+  card.addEventListener('lostpointercapture', release);
+  addEventListener('blur', release);
 
   // ---- physics (fixed substeps) ----
   function physics(dt) {

@@ -49,6 +49,9 @@
     overlay.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';           // scroll-lock the page behind
     closeBtn.focus({ preventScroll: true });
+    // deep link: every open modal has a shareable URL (…/#cs-key).
+    // replaceState = no history pollution, no scroll jump.
+    history.replaceState(null, '', '#cs-' + key);
   }
 
   function close() {
@@ -56,6 +59,7 @@
     overlay.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     if (lastFocused && lastFocused.focus) lastFocused.focus();
+    history.replaceState(null, '', location.pathname + location.search);
   }
 
   triggers.forEach(function (t) {
@@ -67,6 +71,10 @@
 
   closeBtn.addEventListener('click', close);
   overlay.addEventListener('mousedown', function (e) { if (e.target === overlay) close(); }); // click the dim area
+
+  // arriving via a deep link (…/#cs-key) opens that case study directly
+  var m = location.hash.match(/^#cs-([\w-]+)$/);
+  if (m && document.getElementById('tmpl-' + m[1])) open(m[1]);
 
   document.addEventListener('keydown', function (e) {
     if (!overlay.classList.contains('open')) return;

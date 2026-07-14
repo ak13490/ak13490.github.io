@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <!-- Design system: order matters (tokens → base → components → utilities) -->
-<link rel="stylesheet" href="assets/site.css?v=3703f16b">
+<link rel="stylesheet" href="assets/site.css?v=139fcf22">
 <script src="assets/js/main.js?v=2cf64ccf" defer></script>
 <script src="assets/js/cursor-image.js?v=07489d1a" defer></script>
 <script src="assets/js/modal.js?v=be447c4f" defer></script>
@@ -214,8 +214,8 @@
 <div class="sechead"><p class="eyebrow m0"><span class="tick"></span>07 / Beyond Work</p><h2 class="h2">The human dimension.</h2></div>
 <p class="bnote m0" style="max-width:640px;margin-bottom:32px">Curiosity, world-building, systems, narrative — the things I read and watch shape how I frame problems.</p>
 <div class="beyond">
-<div class="card bcard rv"><div class="bhead">Anime I recommend</div><ul class="blist"><li class="m0"><span class="fw6">Naruto Shippuden</span> <span class="mut">— hard work, loyalty, and sacrifice; honour earned, not inherited. Best watched right after Naruto.</span></li><li class="m0"><span class="fw6">Vinland Saga</span> <span class="mut">— a patient arc from revenge to purpose; what you build outlasts what you conquer.</span></li><li class="m0"><span class="fw6">Haikyu!!</span> <span class="mut">— the joy of marginal gains and a team greater than the sum of its players.</span></li></ul></div>
-<div class="card bcard rv"><div class="bhead">Books I recommend</div><ul class="blist"><li class="ph m0">[BOOK_REC_1] — why, one line — to be added —</li><li class="ph m0">[BOOK_REC_2] — to be added —</li><li class="ph m0">[BOOK_REC_3] — to be added —</li></ul></div>
+<div class="card bcard rv"><div class="bhead">Anime I recommend</div><ul class="blist"><li class="m0"><span class="fw6">Naruto Shippuden</span> <span class="mut">— hard work, loyalty, and sacrifice; honour earned, not inherited. Best watched right after Naruto.</span></li><li class="m0"><span class="fw6">Vinland Saga</span> <span class="mut">— a patient arc from revenge to purpose; what you build outlasts what you conquer.</span></li><li class="m0"><span class="fw6">Haikyu!!</span> <span class="mut">— the joy of marginal gains and a team greater than the sum of its players.</span></li></ul><button class="bmore" data-modal="anime-all" type="button">See the full list <span aria-hidden="true">→</span></button></div>
+<div class="card bcard rv"><div class="bhead">Books I recommend</div><ul class="blist"><li class="m0"><span class="fw6">Mistborn</span> <span class="mut">by Brandon Sanderson — the most satisfying magic system I've ever read, wrapped in a proper page-turner.</span></li><li class="m0"><span class="fw6">The Boy, the Mole, the Fox and the Horse</span> <span class="mut">by Charlie Mackesy — kindness, courage, and asking for help, in a few honest lines.</span></li><li class="m0"><span class="fw6">Tuesdays with Morrie</span> <span class="mut">by Mitch Albom — a dying mentor on what actually matters; perspective over hustle.</span></li></ul><button class="bmore" data-modal="books-all" type="button">See the full list <span aria-hidden="true">→</span></button></div>
 <div class="card bcard rv"><div class="bhead">Family</div><div class="ph">[FAMILY_NOTE — optional, a brief warm human note] — to be added —</div></div>
 <div class="card bcard rv"><div class="bhead">Giving back — Bhumi NGO · Kanini Project</div><p class="bnote">City-level ops coordinator across <span class="fw6">6 centers, 122 children/year</span>. Taught 30 students weekly for a year — <span class="fw6">85% scored 75%+</span> in the NIIT exam.</p></div>
 </div>
@@ -470,6 +470,28 @@
   <p>A <strong>one-click login</strong> that uses the account the viewer is already signed into on the device — the <strong>Amazon account</strong> on a Fire TV stick, the <strong>Google account</strong> on an Android TV. No typing, no second screen, one press of the remote. Fire TV shipped first as the 0→1 proof, then the pattern scaled to Android TV. Paired with it: <strong>one-click payment via Amazon In-App Purchase</strong>, so the subscription moment inherited the same zero-friction path — <span class="acc">+32% subscribers and $182K in recurring revenue</span> from that companion flow.</p>
   <h2>What I took away</h2>
   <p>On constrained platforms, the winning product move is usually <em>removal</em> — the device already knew who the user was; the product just had to stop asking. Identify the platform-shaped friction, then delete it.</p>
+</template>
+
+<template id="tmpl-anime-all" data-eyebrow="Beyond work" data-title="Anime I've loved">
+  <p class="m-sub">The three on the card are my favourites — here's the fuller list of shows I've watched and genuinely enjoyed. I keep adding to it.</p>
+  <ul>
+    <li><span class="fw6">Naruto Shippuden</span> <span class="mut">— hard work, loyalty, and sacrifice; honour earned, not inherited.</span></li>
+    <li><span class="fw6">Vinland Saga</span> <span class="mut">— a patient arc from revenge to purpose.</span></li>
+    <li><span class="fw6">Haikyu!!</span> <span class="mut">— marginal gains and a team greater than the sum of its players.</span></li>
+    <!-- Add more titles below in this exact format:
+    <li><span class="fw6">Title</span> <span class="mut">— short note.</span></li> -->
+  </ul>
+</template>
+
+<template id="tmpl-books-all" data-eyebrow="Beyond work" data-title="Books I've loved">
+  <p class="m-sub">The three on the card are my favourites — here's the fuller list of books I've read and genuinely enjoyed. I keep adding to it.</p>
+  <ul>
+    <li><span class="fw6">Mistborn</span> <span class="mut">by Brandon Sanderson — the most satisfying magic system I've ever read.</span></li>
+    <li><span class="fw6">The Boy, the Mole, the Fox and the Horse</span> <span class="mut">by Charlie Mackesy — kindness, courage, and asking for help.</span></li>
+    <li><span class="fw6">Tuesdays with Morrie</span> <span class="mut">by Mitch Albom — a dying mentor on what actually matters.</span></li>
+    <!-- Add more titles below in this exact format:
+    <li><span class="fw6">Title</span> <span class="mut">by Author — short note.</span></li> -->
+  </ul>
 </template>
 
 </body>

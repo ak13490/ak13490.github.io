@@ -531,6 +531,10 @@ a { color: inherit; }
 .bnote { font-size: 14px; line-height: var(--lh-body); color: var(--mut); margin: 14px 0 0; }
 .bnote .fw6 { color: var(--ink); }
 
+/* CTA that opens the "full list" modal (reuses the modal component via data-modal) */
+.bmore { margin-top: 16px; background: none; border: none; padding: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); display: inline-flex; align-items: center; gap: 6px; }
+.bmore:hover { color: var(--acc); }
+
 @media (max-width: 700px) {
   .beyond { grid-template-columns: 1fr; }
 }

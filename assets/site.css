@@ -300,8 +300,8 @@ a { color: inherit; }
    Height is driven by JS (rope length); text clips as it stretches. */
 .lan-band { position: relative; width: 44px; height: 220px; margin: 0 auto; background: var(--ink); border-left: 1px solid var(--ln); border-right: 1px solid var(--ln); overflow: hidden; }
 .lan-band span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; font-family: var(--font-mono); font-size: 9px; letter-spacing: .34em; text-transform: uppercase; color: var(--bg); opacity: .85; user-select: none; }
-:root.dark .lan-band { background: #000; }
-:root.dark .lan-band span { color: var(--ink); }
+/* no dark override: the ink/bg tokens invert themselves — dark mode gets an
+   off-white band with near-black text, mirroring light mode's figure-ground */
 
 /* clip: flat print-language clamp — sharp corners, ink border, offset shadow,
    pill slot echoing the card's .idhole, red accent tick */

@@ -446,8 +446,42 @@ a { color: inherit; }
 .tdesc { font-size: var(--fs-sm); color: var(--mut); margin-top: 4px; line-height: var(--lh-snug); max-width: 620px; }
 
 /* ── assets/components/philosophy/philosophy.css ── */
-/* philosophy — 3-up grid of principle cards (index, title, body).
-   .pcard is also reused by the testimonial component. Composes with .card. */
+/* philosophy → "How I think" — ordered 6-step operating loop (.hloop/.hstep):
+   mono index rail, step title + body, and a clickable receipt (.hrec) that
+   deep-links into the case study proving that step. Closes with a compact
+   principles strip (.hprin). The legacy 3-up principle grid (.pgrid2/.pcard)
+   is kept below: .pcard is reused by the testimonial component + styleguide. */
+
+.hlnote { max-width: 640px; font-size: var(--fs-base); line-height: var(--lh-body); color: var(--mut); }
+.hloop { margin-top: 36px; border-bottom: var(--border); }
+.hstep { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 26px 0; border-top: var(--border); }
+.hnum { font-family: var(--font-mono); font-size: 13px; color: var(--acc); padding-top: 4px; }
+.httl { font-size: 18px; font-weight: var(--fw-semibold); letter-spacing: -.01em; }
+.hbody { font-size: var(--fs-sm); line-height: var(--lh-body); color: var(--mut); margin-top: 6px; max-width: 620px; }
+
+/* receipt — evidence line; whole row is the trigger, arrow-link carries hover.
+   Grid (chip | text) keeps the quote beside the chip at any length — long quotes
+   wrap inside the text column instead of dropping below the chip. */
+.hrec { display: grid; grid-template-columns: auto 1fr; align-items: baseline; gap: 6px 12px; margin-top: 14px; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; font-family: inherit; color: inherit; text-decoration: none; }
+.hrq, .hgo { grid-column: 2; justify-self: start; }
+.hrk { font-family: var(--font-mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); border: var(--border); padding: 2px 7px; }
+.hrq { font-size: var(--fs-sm); font-weight: var(--fw-medium); color: var(--ink); }
+.hgo { font-family: var(--font-mono); font-size: 12px; color: var(--acc); white-space: nowrap; }
+.hrec:hover .hgo, .hrec:focus-visible .hgo { text-decoration: underline; text-underline-offset: 3px; }
+
+/* principles strip — the belief layer, demoted beneath the loop */
+.hprin { margin-top: 36px; }
+.hprin-head { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); margin-bottom: 14px; }
+.hprin-list { display: flex; flex-wrap: wrap; gap: 10px 28px; }
+.hpit { font-size: var(--fs-sm); color: var(--mut); }
+.hpit .pidx { margin-right: 6px; }
+
+@media (max-width: 700px) {
+  .hstep { grid-template-columns: 40px 1fr; gap: 14px; padding: 22px 0; }
+  .hprin-list { gap: 8px 20px; }
+}
+
+/* legacy principle-card grid (still used by testimonial + styleguide) */
 .pgrid2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .pcard { padding: 26px; display: flex; flex-direction: column; gap: 0; }
 .pidx { font-family: var(--font-mono); font-size: 12px; color: var(--acc); }

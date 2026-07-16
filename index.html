@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <!-- Design system: order matters (tokens → base → components → utilities) -->
-<link rel="stylesheet" href="assets/site.css?v=0e4e887d">
+<link rel="stylesheet" href="assets/site.css?v=bf3d748c">
 <script src="assets/js/main.js?v=2cf64ccf" defer></script>
 <script src="assets/js/cursor-image.js?v=07489d1a" defer></script>
 <script src="assets/js/modal.js?v=d66a549c" defer></script>
@@ -350,8 +350,9 @@
 
 <template id="tmpl-redeem" data-eyebrow="Head Digital Works · A23 Rummy" data-title="Redeem-cancellation UX">
   <div class="m-tags"><span class="tag">UX</span><span class="tag">Revenue</span><span class="tag">First-principles</span></div>
-  <h1>Swapping taxable deposits for internal liquidity at peak intent</h1>
-  <p class="m-sub">When India levied 28% GST on RMG deposits, we absorbed it — structuralizing 44% GST pressure on GGR. Overnight, driving new deposits in some contexts became net-negative. A 1-click redeem-cancel at the exact moment a player runs out of funds turned a taxable deposit into a tax-neutral capital swap.</p>
+  <h1>The cheapest deposit is the one the player already made</h1>
+  <p class="m-sub">India's GST on real-money gaming jumped to 28% of every deposit, and A23 absorbed it rather than pass it to players — roughly ₹44 of every ₹100 the platform actually earned was going out as tax. My answer: when a player runs out of money mid-session, give them one tap to reclaim cash they'd already asked to withdraw — instead of pushing a fresh, freshly-taxed deposit.</p>
+  <div class="m-note"><span class="m-note-k">My role</span><p>Self-initiated: while hunting for ways to get more games out of every active player, I zeroed in on the insufficient-balance moment as the biggest leak in that loop — and connected it to the pending-withdrawal queue, with the company's GST pressure sharpening the case for intervening exactly there. I wrote the PRD and shaped the pop-up with the design team.</p></div>
   <div class="modal-metrics">
     <div class="modal-metric"><div class="m-num">~₹6.2 Cr</div><div class="m-lab">annualized bottom-line GST saving (~₹1.7 L/day)</div></div>
     <div class="modal-metric"><div class="m-num">−1%</div><div class="m-lab">absolute reduction in company GST pressure</div></div>

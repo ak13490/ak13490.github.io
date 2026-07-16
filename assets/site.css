@@ -198,7 +198,7 @@ a { color: inherit; }
 
 /* narrow screens: the long hero/contact status pill wraps instead of clipping */
 @media (max-width: 700px) {
-  .hpill .pill { white-space: normal; line-height: 1.5; }
+  .hpill .pill { white-space: normal; line-height: 1.5; gap: 13px; padding-left: 14px; }
 }
 
 /* ── assets/components/tag/tag.css ── */

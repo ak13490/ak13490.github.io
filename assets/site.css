@@ -784,8 +784,8 @@ a { color: inherit; }
 
 /* affordance on a clickable card */
 .card[data-modal] { cursor: pointer; }
-.cmore { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; }
-.card[data-modal]:hover .cmore { color: var(--acc); }
+.cmore { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--acc); margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; }
+.card[data-modal]:hover .cmore { text-decoration: underline; text-underline-offset: 3px; }
 
 /* mobile: window fills the screen, gutters collapse */
 @media (max-width: 640px) {

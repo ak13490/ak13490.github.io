@@ -643,7 +643,7 @@ a { color: inherit; }
    cover the top of the page, so the dock never competes with them. Hidden
    while the burger menu is open (body:has guard); the case-study modal covers
    it anyway (z-modal 300 > z-nav 50). */
-.dock { position: fixed; bottom: 0; left: 0; right: 0; z-index: var(--z-nav); display: none; border-top: 1.5px solid var(--ink); background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(8px); padding-bottom: env(safe-area-inset-bottom); }
+.dock { position: fixed; bottom: 0; left: 0; right: 0; z-index: var(--z-nav); display: none; border-top: var(--border); background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(8px); padding-bottom: env(safe-area-inset-bottom); }
 .dk { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 13px 0; font-family: var(--font-mono); font-size: 12px; font-weight: var(--fw-medium); text-decoration: none; color: var(--ink); }
 .dk + .dk { border-left: var(--border); }
 .dk svg { width: 14px; height: 14px; }

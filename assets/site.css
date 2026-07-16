@@ -196,6 +196,11 @@ a { color: inherit; }
 .dot { width: 7px; height: 7px; border-radius: var(--radius-pill); background: var(--acc); animation: pulse 2.4s infinite; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
 
+/* narrow screens: the long hero/contact status pill wraps instead of clipping */
+@media (max-width: 700px) {
+  .hpill .pill { white-space: normal; line-height: 1.5; }
+}
+
 /* ── assets/components/tag/tag.css ── */
 /* tag — outlined mono label (with .hot accent variant) and its flex row.
    Usage: <div class="tags"><span class="tag hot">Agentic AI</span>…</div> */

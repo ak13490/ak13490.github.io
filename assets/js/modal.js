@@ -35,7 +35,29 @@
   var closeBtn = overlay.querySelector('.modal-close');
   var lastFocused = null;
 
-  function open(key) {
+  /* scroll the dialog to a [data-anchor] proof line and flash it.
+     Re-corrects once after images above the anchor finish laying out. */
+  function goToAnchor(anchor) {
+    var el = doc.querySelector('[data-anchor="' + anchor + '"]');
+    if (!el) return;
+    var smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function place(behavior) {
+      var top = el.getBoundingClientRect().top - scroll.getBoundingClientRect().top + scroll.scrollTop - 28;
+      scroll.scrollTo({ top: Math.max(0, top), behavior: behavior });
+    }
+    requestAnimationFrame(function () {
+      place(smooth ? 'smooth' : 'auto');
+      el.classList.add('m-hit');
+      setTimeout(function () { el.classList.remove('m-hit'); }, 2600);
+      setTimeout(function () {                       // image-load layout correction
+        if (!overlay.classList.contains('open')) return;
+        var off = el.getBoundingClientRect().top - scroll.getBoundingClientRect().top;
+        if (off < 0 || off > 120) place('auto');
+      }, 500);
+    });
+  }
+
+  function open(key, anchor) {
     var tmpl = document.getElementById('tmpl-' + key);
     if (!tmpl) return;
     eyebrow.textContent = tmpl.getAttribute('data-eyebrow') || '';
@@ -49,9 +71,11 @@
     overlay.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';           // scroll-lock the page behind
     closeBtn.focus({ preventScroll: true });
-    // deep link: every open modal has a shareable URL (…/#cs-key).
+    if (anchor) goToAnchor(anchor);
+    // deep link: every open modal has a shareable URL (…/#cs-key, or
+    // …/#cs-key--anchor for a specific proof line).
     // replaceState = no history pollution, no scroll jump.
-    history.replaceState(null, '', '#cs-' + key);
+    history.replaceState(null, '', '#cs-' + key + (anchor ? '--' + anchor : ''));
   }
 
   function close() {
@@ -63,18 +87,20 @@
   }
 
   triggers.forEach(function (t) {
-    t.addEventListener('click', function () { open(t.getAttribute('data-modal')); });
+    var go = function () { open(t.getAttribute('data-modal'), t.getAttribute('data-target')); };
+    t.addEventListener('click', go);
     t.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(t.getAttribute('data-modal')); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
     });
   });
 
   closeBtn.addEventListener('click', close);
   overlay.addEventListener('mousedown', function (e) { if (e.target === overlay) close(); }); // click the dim area
 
-  // arriving via a deep link (…/#cs-key) opens that case study directly
-  var m = location.hash.match(/^#cs-([\w-]+)$/);
-  if (m && document.getElementById('tmpl-' + m[1])) open(m[1]);
+  // arriving via a deep link (…/#cs-key or …/#cs-key--anchor) opens that
+  // case study directly, scrolled to the anchored proof line if given
+  var m = location.hash.match(/^#cs-([a-z]+)(?:--([\w-]+))?$/);
+  if (m && document.getElementById('tmpl-' + m[1])) open(m[1], m[2]);
 
   document.addEventListener('keydown', function (e) {
     if (!overlay.classList.contains('open')) return;

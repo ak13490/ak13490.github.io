@@ -257,7 +257,14 @@ a { color: inherit; }
   .mmenu.open { display: flex; }
 }
 @media (max-width: 700px) {
-  .nright .btn, .nright .rlink { display: none; }
+  .nright .btn { display: none; }
+  /* résumé stays in the bar as a compact bordered button, revealed with the
+     dock once the hero (which has its own résumé CTA) scrolls away */
+  .nright .rlink { display: inline-flex; align-items: center; border: var(--border); border-color: transparent; color: var(--ink); font-weight: var(--fw-semibold); font-size: 13px; white-space: nowrap; max-width: 0; padding: 8px 0; margin: 0 -14px 0 0; opacity: 0; visibility: hidden; overflow: hidden; transition: max-width .3s ease, padding .3s ease, margin .3s ease, opacity .25s ease; }
+  body.past-hero .nright .rlink { max-width: 120px; padding: 8px 11px; margin: 0; opacity: 1; visibility: visible; border-color: var(--ln); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nright .rlink { transition: none; }
 }
 
 /* ── assets/components/hero/hero.css ── */

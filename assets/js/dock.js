@@ -8,9 +8,12 @@
   if (!dock) return;
   if (hero && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
-      dock.classList.toggle('show', !entries[0].isIntersecting);
+      var away = !entries[0].isIntersecting;
+      dock.classList.toggle('show', away);
+      document.body.classList.toggle('past-hero', away);
     }, { threshold: 0.05 }).observe(hero);
   } else {
     dock.classList.add('show');
+    document.body.classList.add('past-hero');
   }
 })();

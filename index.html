@@ -22,13 +22,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <!-- Design system: order matters (tokens → base → components → utilities) -->
-<link rel="stylesheet" href="assets/site.css?v=bf3d748c">
-<script src="assets/js/main.js?v=2cf64ccf" defer></script>
+<link rel="stylesheet" href="assets/site.css?v=ca7dd45a">
+<script src="assets/js/main.js?v=e4f2034b" defer></script>
 <script src="assets/js/cursor-image.js?v=07489d1a" defer></script>
 <script src="assets/js/modal.js?v=d66a549c" defer></script>
 <script src="assets/js/typetext.js?v=5ef3d9c2" defer></script>
 <script src="assets/js/lanyard.js?v=b4fc22a7" defer></script>
 <script src="assets/js/dock.js?v=d9e9da9d" defer></script>
+<script src="assets/js/philosophy.js?v=6776f43d" defer></script>
+<script src="assets/js/chapters.js?v=c73b6094" defer></script>
 </head>
 <body>
 <div class="site">
@@ -45,7 +47,10 @@
 <span class="pill navpill"><span class="dot"></span>Open to work</span>
 <a class="rlink" href="assets/Aditya_Kumar_Resume.pdf" target="_blank" rel="noopener">Résumé</a>
 <a class="btn" href="mailto:aditya_kumar2020@pgp.isb.edu">Get in touch</a>
-<button class="burger" id="burger" aria-label="Menu" aria-controls="mmenu" aria-expanded="false">☰</button>
+<button class="burger" id="burger" aria-label="Menu" aria-controls="mmenu" aria-expanded="false">
+<svg class="h-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 3h14M1 8h14M1 13h14"/></svg>
+<svg class="x-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14"/></svg>
+</button>
 </div>
 </div>
 <div class="mmenu" id="mmenu">
@@ -57,6 +62,9 @@
 </div>
 </div>
 </nav>
+<div class="mscrim" id="mscrim" aria-hidden="true"></div>
+<div class="pbar" id="pbar"></div>
+<div class="seclabel" id="secLabel">You are in <b id="secName">—</b> <span class="num" id="secNum">—/—</span></div>
 
 <header class="hero" id="top"><div class="wrap posrel">
 <div class="lan-rig" id="lanRig" aria-hidden="true">
@@ -84,18 +92,18 @@
 <div class="stats rv">
 <div class="stat"><div class="snum">12+</div><div class="slab">years in software — including 8 in product</div></div>
 <div class="stat"><div class="snum">3</div><div class="slab">industries shipped in — gaming · EdTech · OTT</div></div>
-<div class="stat"><div class="snum">₹1.2 Cr/mo</div><div class="slab">peak incremental revenue unlocked (A23 Rummy)</div></div>
+<div class="stat"><div class="snum">₹1.2Cr<span class="per">/mo</span></div><div class="slab">peak incremental revenue unlocked (A23 Rummy)</div></div>
 <div class="stat"><div class="snum">$13M+</div><div class="slab">revenue impact across roles — EdTech, OTT, gaming</div></div>
-<div class="stat last"><div class="snum">0→1</div><div class="slab">agentic AI system — designed, built &amp; evaluated solo; public on GitHub for anyone to learn from</div></div>
+<div class="stat last"><div class="snum">0→1</div><div class="slab">agentic AI system — built &amp; evaluated solo; public on GitHub</div></div>
 </div>
 </div></section>
 
-<section class="sec"><div class="wrap">
+<section class="sec" data-secname="The thread" data-secidx="1"><div class="wrap">
 <p class="eyebrow m0"><span class="tick"></span>01 / The thread</p>
 <p class="thread rv" style="margin-top:28px">I started in engineering, moved into product, and never stopped caring about how the thing actually works. I frame problems from first principles, decompose them, and ship — then measure honestly. Lately I've been <span class="acc2">building agentic AI myself</span>, because a PM who has shipped an agent argues about AI differently than one who has only read about it.</p>
 </div></section>
 
-<section class="sec" id="ai"><div class="wrap">
+<section class="sec sec-alt" id="ai" data-secname="AI &amp; Agentic Builds" data-secidx="2"><div class="wrap">
 <div class="sechead"><p class="eyebrow m0"><span class="tick"></span>02 / AI &amp; Agentic Builds</p><h2 class="h2">Built, evaluated, and<br>honestly documented.</h2></div>
 <div class="card flag rv">
 <div class="tags"><span class="tag hot">Agentic AI</span><span class="tag">Public build</span><span class="tag">IITM Pravartak · Agentic AI &amp; Applications</span></div>
@@ -120,37 +128,39 @@
 </div>
 </div></section>
 
-<section class="sec" id="work"><div class="wrap">
+<section class="sec" id="work" data-secname="Product Case Studies" data-secidx="3"><div class="wrap">
 <div class="sechead"><p class="eyebrow m0"><span class="tick"></span>03 / Product Case Studies</p><h2 class="h2">Proven PM impact —<br>the other half of the balance.</h2></div>
 <div class="cgrid">
-<div class="card cs rv hover-card" role="button" tabindex="0" data-modal="hvp" data-title="New-player growth" data-img="assets/img/projects/evip-benefits-page.webp"><div class="cmeta"><span class="cco">Head Digital Works · A23 Rummy</span><span class="cco">2023–26</span></div><h3 class="cttl">New-player growth — onboarding &amp; early VIPs</h3><p class="cres m0">~30% more high-value players every month · +2 pt 30-day retention.</p><div class="chips"><span class="chip">Discovery</span><span class="chip">ML/Data</span><span class="chip">Experimentation</span></div><span class="cmore">Read case study →</span></div>
-<div class="card cs rv hover-card" role="button" tabindex="0" data-modal="matchmaking" data-title="Matchmaking"><div class="cmeta"><span class="cco">Head Digital Works · A23 Rummy</span><span class="cco">2023–26</span></div><h3 class="cttl">New-player matchmaking</h3><p class="cres m0">+4% D7 retention via behavioral-insight matchmaking.</p><div class="chips"><span class="chip">Behavioral insight</span><span class="chip">Experimentation</span></div><span class="cmore">Read case study →</span></div>
-<div class="card cs rv hover-card" role="button" tabindex="0" data-modal="redeem" data-title="Redeem UX" data-img="assets/img/projects/ib-cancel-redeem.webp"><div class="cmeta"><span class="cco">Head Digital Works · A23 Rummy</span><span class="cco">2023–26</span></div><h3 class="cttl">Redeem-cancellation UX</h3><p class="cres m0">+2.5% redeem-cancellation amount, −0.7 pt GST pressure via end-of-game UX.</p><div class="chips"><span class="chip">UX</span><span class="chip">Revenue</span></div><span class="cmore">Read case study →</span></div>
-<div class="card cs rv hover-card" role="button" tabindex="0" data-modal="onboarding" data-title="Onboarding"><div class="cmeta"><span class="cco">Interview Kickstart</span><span class="cco">2021–23</span></div><h3 class="cttl">Onboarding-funnel redesign</h3><p class="cres m0">+43% on a critical onboarding step → +20% sales.</p><div class="chips"><span class="chip">Funnel</span><span class="chip">Growth</span></div><span class="cmore">Read case study →</span></div>
-<div class="card cs rv hover-card" role="button" tabindex="0" data-modal="login" data-title="One-click login"><div class="cmeta"><span class="cco">Voot · Viacom18</span><span class="cco">2020–21</span></div><h3 class="cttl">One-click login — Fire TV &amp; Android TV</h3><p class="cres m0">+43% / +50% logged-in users; ~50% subs &amp; ~30% video-views lift.</p><div class="chips"><span class="chip">0→1</span><span class="chip">Platform</span><span class="chip">Conversion</span></div><span class="cmore">Read case study →</span></div>
+<div class="card cs rv hover-card" role="button" tabindex="0" data-modal="hvp" data-title="New-player growth" data-img="assets/img/projects/evip-benefits-page.webp"><div class="cmeta"><span class="cco">Head Digital Works · A23 Rummy</span><span class="cco">2023–26</span></div><h3 class="cttl">New-player growth — onboarding &amp; early VIPs</h3><p class="cres m0"><span class="n">~30%</span> more high-value players every month · <span class="n">+2 pt</span> 30-day retention.</p><div class="chips"><span class="chip">Discovery</span><span class="chip">ML/Data</span><span class="chip">Experimentation</span></div><span class="cmore">Read case study →</span></div>
+<div class="card cs rv hover-card" role="button" tabindex="0" data-modal="matchmaking" data-title="Matchmaking"><div class="cmeta"><span class="cco">Head Digital Works · A23 Rummy</span><span class="cco">2023–26</span></div><h3 class="cttl">New-player matchmaking</h3><p class="cres m0"><span class="n">+4%</span> D7 retention via behavioral-insight matchmaking.</p><div class="chips"><span class="chip">Behavioral insight</span><span class="chip">Experimentation</span></div><span class="cmore">Read case study →</span></div>
+<div class="card cs rv hover-card" role="button" tabindex="0" data-modal="redeem" data-title="Redeem UX" data-img="assets/img/projects/ib-cancel-redeem.webp"><div class="cmeta"><span class="cco">Head Digital Works · A23 Rummy</span><span class="cco">2023–26</span></div><h3 class="cttl">Redeem-cancellation UX</h3><p class="cres m0"><span class="n">+2.5%</span> redeem-cancellation amount, <span class="n">−0.7 pt</span> GST pressure via end-of-game UX.</p><div class="chips"><span class="chip">UX</span><span class="chip">Revenue</span></div><span class="cmore">Read case study →</span></div>
+<div class="card cs rv hover-card" role="button" tabindex="0" data-modal="onboarding" data-title="Onboarding"><div class="cmeta"><span class="cco">Interview Kickstart</span><span class="cco">2021–23</span></div><h3 class="cttl">Onboarding-funnel redesign</h3><p class="cres m0"><span class="n">+43%</span> on a critical onboarding step → <span class="n">+20%</span> sales.</p><div class="chips"><span class="chip">Funnel</span><span class="chip">Growth</span></div><span class="cmore">Read case study →</span></div>
+<div class="card cs rv hover-card" role="button" tabindex="0" data-modal="login" data-title="One-click login"><div class="cmeta"><span class="cco">Voot · Viacom18</span><span class="cco">2020–21</span></div><h3 class="cttl">One-click login — Fire TV &amp; Android TV</h3><p class="cres m0"><span class="n">+43% / +50%</span> logged-in users; <span class="n">~50%</span> subs &amp; <span class="n">~30%</span> video-views lift.</p><div class="chips"><span class="chip">0→1</span><span class="chip">Platform</span><span class="chip">Conversion</span></div><span class="cmore">Read case study →</span></div>
 </div>
 </div></section>
 
-<section class="sec" id="timeline"><div class="wrap">
+<section class="sec sec-alt" id="timeline" data-secname="Timeline" data-secidx="4"><div class="wrap">
 <div class="sechead"><p class="eyebrow m0"><span class="tick"></span>04 / Timeline</p><h2 class="h2">Work &amp; education.</h2></div>
-<div class="tl">
-<div class="titem now rv"><div class="tdot"></div><div class="tyr">2023–2026<span class="ttag mono">WORK</span></div><div class="trole">Lead Product Manager — Head Digital Works</div><div class="tdesc">Real Money Gaming, A23 Rummy. Most recent role. Led core product journeys for A23 Rummy across a 3-person team.</div></div>
-<div class="titem rv"><div class="tdot"></div><div class="tyr">2021–2023<span class="ttag mono">WORK</span></div><div class="trole">Product Manager — Interview Kickstart</div><div class="tdesc">EdTech, remote. BNPL revenue, internationalization, onboarding growth.</div></div>
-<div class="titem rv"><div class="tdot"></div><div class="tyr">2020–2021<span class="ttag mono">WORK</span></div><div class="trole">Product Manager — Viacom18 / Voot</div><div class="tdesc">OTT — Smart TVs &amp; connected devices.</div></div>
-<div class="titem rv"><div class="tdot"></div><div class="tyr">2019–2020<span class="ttag mono edu">EDUCATION</span></div><div class="trole">MBA (PGP) — Indian School of Business</div><div class="tdesc">Majors: IT Management &amp; Marketing. GMAT 760/800 — top 1%.</div></div>
-<div class="titem rv in"><div class="tdot"></div><div class="tyr">2018–2019<span class="ttag mono">WORK</span></div><div class="trole">Technical Leader — Narayana Learning</div><div class="tdesc">EdTech; ~700K users; $13M+ revenue impact.</div></div>
-<div class="titem rv in"><div class="tdot"></div><div class="tyr">2016–2018<span class="ttag mono">WORK</span></div><div class="trole">Senior Software Engineer — FastFilmz</div><div class="tdesc">OTT; 100x growth, 1.5M+ downloads.</div></div>
-<div class="titem rv in"><div class="tdot"></div><div class="tyr">2013–2016<span class="ttag mono">WORK</span></div><div class="trole">Senior Software Developer — Tarams Technologies</div><div class="tdesc">IT services; $10M+ client revenue.</div></div>
-<div class="titem rv in"><div class="tdot"></div><div class="tyr">2009–2013<span class="ttag mono edu">EDUCATION</span></div><div class="trole">B.Tech ECE — IIIT Hyderabad</div><div class="tdesc">AIEEE AIR 2176 — top 0.002%.</div></div>
+<div class="tl2">
+<div class="trow now L rv"><div class="titem2"><div class="tyr">2023–2026<span class="ttag mono">WORK</span></div><div class="trole">Lead Product Manager — Head Digital Works</div><div class="tdesc">Real Money Gaming, A23 Rummy. Most recent role. Led core product journeys for A23 Rummy across a 3-person team.</div></div><span class="tdot2"></span></div>
+<div class="trow R rv"><span class="tdot2"></span><div class="titem2"><div class="tyr">2021–2023<span class="ttag mono">WORK</span></div><div class="trole">Product Manager — Interview Kickstart</div><div class="tdesc">EdTech, remote. BNPL revenue, internationalization, onboarding growth.</div></div></div>
+<div class="trow L rv"><div class="titem2"><div class="tyr">2020–2021<span class="ttag mono">WORK</span></div><div class="trole">Product Manager — Viacom18 / Voot</div><div class="tdesc">OTT — Smart TVs &amp; connected devices.</div></div><span class="tdot2"></span></div>
+<div class="trow R rv"><span class="tdot2"></span><div class="titem2"><div class="tyr">2019–2020<span class="ttag mono edu">EDUCATION</span></div><div class="trole">MBA (PGP) — Indian School of Business</div><div class="tdesc">Majors: IT Management &amp; Marketing. GMAT 760/800 — top 1%.</div></div></div>
+<div class="trow L rv in"><div class="titem2"><div class="tyr">2018–2019<span class="ttag mono">WORK</span></div><div class="trole">Technical Leader — Narayana Learning</div><div class="tdesc">EdTech; ~700K users; $13M+ revenue impact.</div></div><span class="tdot2"></span></div>
+<div class="trow R rv in"><span class="tdot2"></span><div class="titem2"><div class="tyr">2016–2018<span class="ttag mono">WORK</span></div><div class="trole">Senior Software Engineer — FastFilmz</div><div class="tdesc">OTT; 100x growth, 1.5M+ downloads.</div></div></div>
+<div class="trow L rv in"><div class="titem2"><div class="tyr">2013–2016<span class="ttag mono">WORK</span></div><div class="trole">Senior Software Developer — Tarams Technologies</div><div class="tdesc">IT services; $10M+ client revenue.</div></div><span class="tdot2"></span></div>
+<div class="trow R rv in"><span class="tdot2"></span><div class="titem2"><div class="tyr">2009–2013<span class="ttag mono edu">EDUCATION</span></div><div class="trole">B.Tech ECE — IIIT Hyderabad</div><div class="tdesc">AIEEE AIR 2176 — top 0.002%.</div></div></div>
 </div>
 </div></section>
 
-<section class="sec" id="philosophy"><div class="wrap">
+<section class="sec" id="philosophy" data-secname="How I think" data-secidx="5"><div class="wrap">
 <div class="sechead"><p class="eyebrow m0"><span class="tick"></span>05 / How I think</p><h2 class="h2">A repeatable loop —<br>discover, define, experiment, scale.</h2></div>
+<div class="phi-grid">
+<div class="phi-main">
 <p class="hlnote m0 rv">How messy problems become shipped products: seven moves, always in this order. Every case study on this page is one run of this loop — tap or click any quote to open its case study at the exact line it comes from.</p>
 <div class="hloop">
 <div class="hphase rv"><span class="tick"></span>Discover</div>
-<div class="hstep rv"><div class="hnum">01</div><div>
+<div class="hstep rv" id="hs-01"><div class="hnum">01</div><div>
 <h3 class="httl m0">Locate the problem with data.</h3>
 <p class="hbody m0">Find where the numbers actually break, not where opinions point. The cliff is usually narrower — and more fixable — than the complaint.</p>
 <div class="hev">
@@ -159,7 +169,7 @@
 <button class="hln" type="button" data-modal="redeem" data-target="frozen17"><span class="hpj">Redeem-cancellation UX →</span> <span class="hq">"17% of players hitting an empty balance already had cash frozen in a pending withdrawal."</span></button>
 </div>
 </div></div>
-<div class="hstep rv"><div class="hnum">02</div><div>
+<div class="hstep rv" id="hs-02"><div class="hnum">02</div><div>
 <h3 class="httl m0">Ask the humans why.</h3>
 <p class="hbody m0">Data says what; it never says why. So I get on the phone, sit in on sales calls, and watch real users struggle before deciding anything.</p>
 <div class="hev">
@@ -168,7 +178,7 @@
 <button class="hln" type="button" data-modal="onboarding" data-target="salescalls"><span class="hpj">Onboarding-funnel redesign →</span> <span class="hq">"Sat in on live sales calls — watched users close the tab at the signature wall."</span></button>
 </div>
 </div></div>
-<div class="hstep rv"><div class="hnum">03</div><div>
+<div class="hstep rv" id="hs-03"><div class="hnum">03</div><div>
 <h3 class="httl m0">Do the secondary research — at the source.</h3>
 <p class="hbody m0">Regulations, research papers, competitor benchmarking, vendor data — read them yourself instead of accepting the folklore version; most "constraints" are someone's old implementation of a rule, not the rule.</p>
 <div class="hev">
@@ -178,7 +188,7 @@
 </div>
 </div></div>
 <div class="hphase rv"><span class="tick"></span>Define</div>
-<div class="hstep rv"><div class="hnum">04</div><div>
+<div class="hstep rv" id="hs-04"><div class="hnum">04</div><div>
 <h3 class="httl m0">Define the problem, the metric, and the guardrail — in writing.</h3>
 <p class="hbody m0">State the problem in one line before touching solutions. Pick the metric that actually separates signal, set the guardrail, and write it down — vision doc, PRD, experiment plan.</p>
 <div class="hev">
@@ -188,7 +198,7 @@
 </div>
 </div></div>
 <div class="hphase rv"><span class="tick"></span>Experiment</div>
-<div class="hstep rv"><div class="hnum">05</div><div>
+<div class="hstep rv" id="hs-05"><div class="hnum">05</div><div>
 <h3 class="httl m0">Run hypothesis-led experiments — smallest honest change first.</h3>
 <p class="hbody m0">Every experiment traces to a diagnosed friction and a stated hypothesis — the smallest change that can prove it, A/B'd against the guardrail it must not break.</p>
 <div class="hev">
@@ -197,17 +207,17 @@
 <button class="hln" type="button" data-modal="matchmaking" data-target="pilot"><span class="hpj">New-player matchmaking →</span> <span class="hq">"50/50 pilot on one bet value — win% +6 pp; scaled only after the thesis held."</span></button>
 </div>
 </div></div>
-<div class="hstep rv"><div class="hnum">06</div><div>
+<div class="hstep rv" id="hs-06"><div class="hnum">06</div><div>
 <h3 class="httl m0">Measure honestly — failures included.</h3>
 <p class="hbody m0">What fails gets killed in writing, and the budget moves. Published failures are what make the wins believable.</p>
 <div class="hev">
-<a class="hln" href="#ai-failures"><span class="hpj">AI Support Resolution Agent →</span> <span class="hq">"Three failure cases documented publicly — F-01 to F-03."</span></a>
 <button class="hln" type="button" data-modal="hvp" data-target="failed"><span class="hpj">New-player growth →</span> <span class="hq">"Published the experiment that failed and moved its budget — that credibility carried the wins."</span></button>
+<a class="hln" href="#ai-failures"><span class="hpj">AI Support Resolution Agent →</span> <span class="hq">"Three failure cases documented publicly — F-01 to F-03."</span></a>
 <button class="hln" type="button" data-modal="matchmaking" data-target="rca"><span class="hpj">New-player matchmaking →</span> <span class="hq">"Led the RCA when wait-times regressed — a config change, not the feature; reverting recovered the KPIs."</span></button>
 </div>
 </div></div>
 <div class="hphase rv"><span class="tick"></span>Ship &amp; scale</div>
-<div class="hstep rv"><div class="hnum">07</div><div>
+<div class="hstep rv" id="hs-07"><div class="hnum">07</div><div>
 <h3 class="httl m0">Scale what survives into a system.</h3>
 <p class="hbody m0">A win that stays a one-off is a lost lesson. Prove it once, then make it the default.</p>
 <div class="hev">
@@ -228,9 +238,24 @@
 <span class="hpit"><span class="pidx">P-06</span> Ship, then learn.</span>
 </div>
 </div>
+</div>
+<nav class="hrail" aria-label="Loop map">
+<div class="rphase">Discover</div>
+<a href="#hs-01"><span class="rn">01</span>Locate with data</a>
+<a href="#hs-02"><span class="rn">02</span>Ask the humans</a>
+<a href="#hs-03"><span class="rn">03</span>Secondary research</a>
+<div class="rphase">Define</div>
+<a href="#hs-04"><span class="rn">04</span>Problem · metric · guardrail</a>
+<div class="rphase">Experiment</div>
+<a href="#hs-05"><span class="rn">05</span>Hypothesis-led, smallest</a>
+<a href="#hs-06"><span class="rn">06</span>Measure honestly</a>
+<div class="rphase">Ship &amp; scale</div>
+<a href="#hs-07"><span class="rn">07</span>Scale into a system</a>
+</nav>
+</div>
 </div></section>
 
-<section class="sec"><div class="wrap">
+<section class="sec sec-alt" data-secname="Social proof" data-secidx="6"><div class="wrap">
 <div class="sechead"><p class="eyebrow m0"><span class="tick"></span>06 / Social proof</p><h2 class="h2">What others say.</h2></div>
 <!-- edgy quotation-mark glyph, defined once, reused as a watermark in each card -->
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
@@ -289,7 +314,7 @@
 </div>
 </div></section>
 
-<section class="sec" id="beyond"><div class="wrap">
+<section class="sec" id="beyond" data-secname="Beyond Work" data-secidx="7"><div class="wrap">
 <div class="sechead"><p class="eyebrow m0"><span class="tick"></span>07 / Beyond Work</p><h2 class="h2">The human dimension.</h2></div>
 <p class="bnote m0" style="max-width:640px;margin-bottom:32px">Curiosity, world-building, systems, narrative — the things I read and watch shape how I frame problems.</p>
 <div class="beyond">
@@ -317,7 +342,7 @@
 </div>
 </div></section>
 
-<section class="sec contact" id="contact"><div class="wrap">
+<section class="sec sec-alt contact" id="contact" data-secname="Contact" data-secidx="8"><div class="wrap">
 <p class="eyebrow m0"><span class="tick"></span>08 / Contact</p>
 <h2 class="cbig">Let's talk.</h2>
 <div class="hpill"><span class="pill"><span class="dot"></span>Open to Senior / Lead / Principal &amp; AI Product roles</span></div>
@@ -350,7 +375,7 @@
 
 <template id="tmpl-redeem" data-eyebrow="Head Digital Works · A23 Rummy" data-title="Redeem-cancellation UX">
   <div class="m-tags"><span class="tag">UX</span><span class="tag">Revenue</span><span class="tag">First-principles</span></div>
-  <h1>The cheapest deposit is the one the player already made</h1>
+  <h2 class="m-title">The cheapest deposit is the one the player already made</h2>
   <p class="m-sub">India's GST on real-money gaming jumped to 28% of every deposit, and A23 absorbed it rather than pass it to players — roughly ₹44 of every ₹100 the platform actually earned was going out as tax. My answer: when a player runs out of money mid-session, give them one tap to reclaim cash they'd already asked to withdraw — instead of pushing a fresh, freshly-taxed deposit.</p>
   <div class="m-note"><span class="m-note-k">My role</span><p>Self-initiated: while hunting for ways to get more games out of every active player, I zeroed in on the insufficient-balance moment as the biggest leak in that loop — and connected it to the pending-withdrawal queue, with the company's GST pressure sharpening the case for intervening exactly there. I wrote the PRD and shaped the pop-up with the design team.</p></div>
   <div class="modal-metrics">
@@ -393,7 +418,7 @@
 
 <template id="tmpl-matchmaking" data-eyebrow="Head Digital Works · A23 Rummy" data-title="New-player matchmaking">
   <div class="m-tags"><span class="tag">Behavioral insight</span><span class="tag">Experimentation</span><span class="tag">Retention</span></div>
-  <h1>Breaking the losing streaks that kill new players</h1>
+  <h2 class="m-title">Breaking the losing streaks that kill new players</h2>
   <p class="m-sub">60% of newly-converted players churned within their first week — and the data traced it to early, consecutive losing streaks. I redesigned who a struggling new player gets matched with — never touching the cards, the odds, or the money — so a bad first day stopped becoming a permanent goodbye.</p>
   <div class="m-note" data-anchor="eomm-paper"><span class="m-note-k">My role</span><p><strong>Discovery to rollout, this was mine.</strong> I wrote the SQL that traced 40% of new-player churn to the first 20 games; churned-player calls pointed to consecutive early losses breaking trust, and I validated that pattern in Mixpanel and CleverTap before writing any strategy. I authored the <strong>EOMM Vision Document</strong> (Engagement-Optimized Matchmaking — matching designed around keeping players engaged, not just filling tables fast) and the <strong>"Increasing D7 retention through matchmaking" PRD</strong> framed on the WWW'17 research paper, designed the experiments, made the rollout calls — including removing the 50/50 split — and led the RCA when 6-player wait-times regressed.</p></div>
   <div class="modal-metrics">
@@ -462,8 +487,8 @@
 
 <template id="tmpl-hvp" data-eyebrow="Head Digital Works · A23 Rummy" data-title="New-player growth — onboarding &amp; early VIPs">
   <div class="m-tags"><span class="tag">Discovery</span><span class="tag">ML/Data</span><span class="tag">Experimentation</span></div>
-  <h1>Finding tomorrow's VIPs on day one — and keeping them</h1>
-  <p class="m-sub">About 3 in 100 new players go on to drive most of a rummy platform's revenue — and we were losing them early. Across 2024–25, this problem was mine end to end: keep more new players through their first month, and grow the number who become high-value. The behaviour model came from our Analytics team; the external-data integration, the calling program, and the experiments were mine.</p>
+  <h2 class="m-title">Finding tomorrow's VIPs on day one — and keeping them</h2>
+  <p class="m-sub">About 3 in 100 new players go on to drive most of a rummy platform's revenue — and we were losing them early. Across 2024–25, I was one of the PMs working on this problem: keep more new players through their first month, and grow the number who become high-value. The behaviour model came from our Analytics team; the external-data integration, the calling program, and the experiments were my track.</p>
   <div class="modal-metrics">
     <div class="modal-metric"><div class="m-num">+70</div><div class="m-lab">more high-value players from every monthly cohort — a ~30% step-up in the platform's most valuable inflow</div></div>
     <div class="modal-metric"><div class="m-num">+14%</div><div class="m-lab">net revenue (NGR) over players' first 30 days</div></div>
@@ -471,7 +496,7 @@
     <div class="modal-metric"><div class="m-num">+2 pt</div><div class="m-lab">30-day retention across all new players</div></div>
   </div>
   <h2>The problem</h2>
-  <p data-anchor="problem-hvp"><strong>The problem, defined:</strong> the few players who matter most reveal themselves within days of joining — and fewer and fewer of them were showing up. The job was two-fold: <strong>grow D30 high-value players, and lift the broad new-player base feeding them.</strong></p>
+  <p data-anchor="problem-hvp"><strong>The problem, defined:</strong> players who reach early-VIP status go on to drive the platform's revenue in the months that follow — so identifying and growing the number of new early VIPs was a strategic priority for fuelling future growth. These players reveal themselves within days of joining — and fewer and fewer of them were showing up. The job was two-fold: <strong>grow D30 high-value players, and lift the broad new-player base feeding them.</strong></p>
   <div class="m-chart" data-anchor="decline" role="img" aria-label="New players showing VIP behaviour in their first 3 days, across three successive periods: 904, then 360, then 232 — a roughly 75% decline.">
     <div class="m-row"><span class="m-k">early '23</span><span class="m-bar"><span style="width:100%"></span></span><span class="m-v">904</span></div>
     <div class="m-row"><span class="m-k">late '23</span><span class="m-bar"><span style="width:40%"></span></span><span class="m-v">360</span></div>
@@ -481,7 +506,7 @@
   <h2>What we found before building anything</h2>
   <p>The quantitative diagnosis found <strong>three frictions</strong>:</p>
   <ul>
-    <li>A purchase cliff from the <strong>5th top-up onward</strong> — the first four land within ~72 hours, then velocity crashes.</li>
+    <li>The number and size of purchases in a player's first 30 days directly correlates with their retention — with a cliff around the <strong>4th–5th top-up</strong>: the first four land quickly, then velocity crashes.</li>
     <li><strong>Mid-cycle decay</strong> — retention of predicted VIPs falls from 58% in week two to 47% by day 30.</li>
     <li>A bet-mix clue — these players live on <strong>medium and high-stakes tables</strong>, where the only engagement tool was a fatigue-inducing 24-hour daily leaderboard.</li>
   </ul>
@@ -492,8 +517,9 @@
     <div class="m-row"><span class="m-k">aware</span><span class="m-bar"><span style="width:6%"></span></span><span class="m-v">3%</span></div>
   </div>
   <p class="m-cap">"Do you know about our offers and benefits?" — our most valuable new players, one day after we identified them. We were finding the right players, then staying silent.</p>
+  <p>These results landed mid-way through the build — and we acted on them right away: I took the findings to the marketing team, formed a joint GTM plan, and we finalised an in-app banner surfacing the offers to identified players. The fuller product answer came later, as its own roadmap item (below).</p>
   <h2>The approach: spot them on day one, then remove what stops them</h2>
-  <p data-anchor="signals">You can't help a player you can't see. Our in-house model (built by Analytics; recall 66–75%, ~4× better than random targeting) reads three days of gameplay before it can flag anyone — but most quitting happens in those first three days. So I brought in <strong>outside payment data</strong> that works the moment a first deposit lands: a 10,000-user trial proved the match was real — a 65.75% hit rate — and, since the vendor charged per signal, we screened all 24 with the Analytics team for precision and recall and kept only the 4 that mattered, cutting the per-user cost ~6×. Either flag puts a player into one shared pool. The bonuses ran on that pool; the leaderboards went <strong>wider — every new player, tiered by stakes</strong> — so the premium fix and the broad-base fix shipped as one system.</p>
+  <p data-anchor="signals">You can't help a player you can't see. Our in-house model (built by Analytics) reads three days of gameplay before it can flag anyone — but most quitting happens in those first three days. So I brought in <strong>outside payment data</strong> that works the moment a first deposit lands: a 10,000-user trial proved the match was real — a 65.75% hit rate — and, since the vendor charged per signal, we screened all 24 with the Analytics team for precision and recall and kept only the 4 that mattered, cutting the per-user cost ~6×. Either flag puts a player into one shared pool. The bonuses ran on that pool; the leaderboards went <strong>wider — every new player, tiered by stakes</strong> — so the premium fix and the broad-base fix shipped as one system.</p>
   <pre><code>  SPOT THEM ────────────────────────
           [ New player joins ]
                     │
@@ -515,9 +541,9 @@
                     ▼
     +70 high-value players / cohort</code></pre>
   <h2>Why two-hour leaderboards?</h2>
-  <p>Both retention problems shared a culprit: the 24-hour leaderboard. A daily board punishes anyone who joins late — the totals at the top look unassailable, so players simply stop competing (the <em>leaderboard discouragement effect</em>), and our premium players had disengaged from them entirely. Drawing on Yu-kai Chou's <em>Actionable Gamification</em> (Core Drive 2: Development &amp; Accomplishment), we compressed the cycle to <strong>two hours — 12 fresh starts a day</strong>. A wipe-out stops being terminal, "urgent optimism" replaces resignation, and table re-joins compound. The same mechanic on entry-stakes tables for <em>every</em> new player is what lifted the platform's <span class="acc">30-day retention baseline by ~2 points</span>.</p>
+  <p>Both retention problems shared a culprit: the 24-hour leaderboard. Engagement is what drives retention — and a daily board suppresses it: anyone who joins late faces totals at the top that look unassailable, their chances of winning collapse, and they simply stop competing (the <em>leaderboard discouragement effect</em>). Drawing on Yu-kai Chou's <em>Actionable Gamification</em> (Core Drive 2: Development &amp; Accomplishment), we compressed the cycle to <strong>two hours — 12 fresh starts a day</strong>. A wipe-out stops being terminal, "urgent optimism" replaces resignation, and table re-joins compound. The same mechanic on entry-stakes tables for <em>every</em> new player is what lifted the platform's <span class="acc">30-day retention baseline by ~2 points</span>.</p>
   <h2>Why a locked bonus?</h2>
-  <p>The milestone bonuses were a <strong>100% match</strong> — top up ₹100, get ₹100 — but locked, releasing at a <strong>20:1 ratio</strong>: ₹1 unlocks for every ₹20 wagered. Once granted, the bonus already <em>feels</em> like the player's own money (the endowment effect — Yu-kai Chou's <em>Ownership &amp; Possession</em> drive, sharpened by loss aversion), so leaving it locked feels like losing it. Players wagered to release it, topped up to keep wagering, and earned the next milestone bonus along the way — a self-reinforcing <strong>purchase → play → unlock → purchase</strong> loop.</p>
+  <p>The milestone bonuses were a <strong>100% match</strong> — top up ₹100, get ₹100 — but locked, releasing gradually as the player wagers. Once granted, the bonus already <em>feels</em> like the player's own money (the endowment effect — Yu-kai Chou's <em>Ownership &amp; Possession</em> drive, sharpened by loss aversion), so leaving it locked feels like losing it. Players wagered to release it, topped up to keep wagering, and earned the next milestone bonus along the way — a self-reinforcing <strong>purchase → play → unlock → purchase</strong> loop.</p>
   <h2>What the experiments showed</h2>
   <p data-anchor="experiments">Every experiment mapped to a <strong>diagnosed friction</strong> — none were intuition bets — and each ran as an A/B test with NGR (net gaming revenue, after bonus costs) as the guardrail:</p>
   <table class="m-table">
@@ -535,7 +561,7 @@
   <p><strong>The guardrail:</strong> NGR after bonus costs — in the D8–D30 leaderboard test it dipped until D15, then swung strongly positive by D31–45. Ops guardrail: low-liquidity instances were patched with longer-duration leaderboards queued for low-liquidity windows.</p>
   <p data-anchor="rollout">The winners closed with written summaries and <strong>product + marketing sign-off</strong>, then rolled out to every new player. The sustained net effect: <span class="acc">~70 extra high-value players from every monthly cohort</span>, at no extra acquisition spend.</p>
   <h2>Closing the loop: benefits players can actually see</h2>
-  <p>The calling program left one problem standing: players didn't know what they'd unlocked. The answer we designed was an <strong>Early-VIP page</strong>, surfaced the moment a player is identified — every benefit bundled on one screen, personalized to how they were identified and where they are in their first month: "win upto" leaderboard tiles, milestone purchase bonuses, missions, and <strong>loss protection</strong> (50% of early losses covered).</p>
+  <p>The GTM banner was the quick fix for the awareness gap; the durable answer we designed was an <strong>Early-VIP page</strong>, surfaced the moment a player is identified — every benefit bundled on one screen, personalized to how they were identified and where they are in their first month: "win upto" leaderboard tiles, milestone purchase bonuses, missions, and <strong>loss protection</strong> (50% of early losses covered).</p>
   <figure class="m-figure phone">
     <img src="assets/img/projects/evip-benefits-page.webp" alt="The proposed Early-VIP page: a 'You have been chosen — win upto 2 Lakh' screen bundling four benefit tiles — leaderboards worth ₹7,50,000, missions worth ₹45,000, a 100% purchase bonus worth ₹55,000 on the first 5 top-ups, and loss protection covering 50% of losses." onerror="this.closest('figure').style.display='none'">
     <figcaption class="m-cap">The proposed design: identification triggers a personalized "You have been chosen" page — the answer to 55% of our best players not knowing their benefits existed.</figcaption>
@@ -547,7 +573,7 @@
 
 <template id="tmpl-onboarding" data-eyebrow="Interview Kickstart" data-title="Onboarding-funnel redesign">
   <div class="m-tags"><span class="tag">Funnel</span><span class="tag">Growth</span><span class="tag">Discovery</span></div>
-  <h1>One signature instead of fifteen</h1>
+  <h2 class="m-title">One signature instead of fifteen</h2>
   <p class="m-sub">At Interview Kickstart (EdTech, US market), enrollments were dying at the very end of the funnel — after marketing had already paid for the lead and the webinar had already convinced them. I owned the sales-funnel product.</p>
   <div class="modal-metrics">
     <div class="modal-metric"><div class="m-num">+43%</div><div class="m-lab">completion on the critical enrollment step</div></div>
@@ -573,7 +599,7 @@
 
 <template id="tmpl-login" data-eyebrow="Voot · Viacom18" data-title="One-click login">
   <div class="m-tags"><span class="tag">0→1</span><span class="tag">Platform</span><span class="tag">Conversion</span></div>
-  <h1>One-click login for the living room</h1>
+  <h2 class="m-title">One-click login for the living room</h2>
   <p class="m-sub">On a TV, every character is a D-pad hunt across an on-screen keyboard — so most viewers simply never logged in. I owned Voot's smart-TV and connected-device journeys, and shipped a 0→1 one-click login for Fire TV, then scaled it across Android TV.</p>
   <div class="modal-metrics">
     <div class="modal-metric"><div class="m-num">+43%</div><div class="m-lab">logged-in users on Fire TV</div></div>

@@ -22,6 +22,9 @@
   /* Approved accent alternatives (swap --acc to retheme):
      rust  #D9482B  ·  green #1F6E5C  ·  blue #2456D6           */
   --acc-ink: #FFFFFF;        /* text on accent background        */
+  --acc-text: #C13D22;       /* accent for SMALL text (≤16px) — same hue,
+                                darkened for legibility; dots/tags/borders/
+                                big numerals keep --acc                  */
 
   /* ---- Typography ---- */
   --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
@@ -92,6 +95,7 @@
   --card: #1A1A17;
   --soft: #1E1E1B;
   /* --acc stays the same across themes */
+  --acc-text: #E9704F;   /* small-text accent lightens on dark ground */
 }
 
 /* ---- Root surface (the app wrapper) ---- */
@@ -206,7 +210,7 @@ a { color: inherit; }
    Usage: <div class="tags"><span class="tag hot">Agentic AI</span>…</div> */
 .tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .tag { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; border: var(--border); padding: 4px 9px; color: var(--mut); }
-.tag.hot { border-color: var(--acc); color: var(--acc); }
+.tag.hot { border-color: var(--acc); color: var(--acc-text); }
 
 /* ── assets/components/chip/chip.css ── */
 /* chip — soft-filled mono token (skills, stacks) and its flex row.
@@ -266,6 +270,19 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .nright .rlink { transition: none; }
 }
+
+/* ---- burger state + scrim (audit V-7): the icon morphs ☰ → ✕ while the
+   menu is open, and a scrim dims the page behind it (tap to close;
+   main.js wires the click). ---- */
+.burger svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; }
+.burger .x-icon { display: none; }
+.nav:has(.mmenu.open) .burger .h-icon { display: none; }
+.nav:has(.mmenu.open) .burger .x-icon { display: block; }
+.mscrim { position: fixed; inset: 0; z-index: calc(var(--z-nav) - 5); background: rgba(20,20,18,.38);
+          opacity: 0; pointer-events: none; transition: opacity var(--dur-fast) var(--ease); }
+:root.dark .mscrim { background: rgba(0,0,0,.55); }
+body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) { .mscrim { transition: none; } }
 
 /* ── assets/components/hero/hero.css ── */
 /* hero — name block: dot-grid background, display name, sub, CTAs, status pill.
@@ -350,7 +367,9 @@ a { color: inherit; }
 .stats { display: grid; grid-template-columns: repeat(5, 1fr); border: var(--border); }
 .stat { padding: 26px 22px; border-right: var(--border); min-width: 0; }
 .stat.last { border-right: none; }
-.snum { font-family: var(--font-mono); font-size: clamp(24px, 2.6vw, 34px); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); }
+.snum { font-family: var(--font-mono); font-size: clamp(24px, 2.6vw, 34px); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); white-space: nowrap; }
+/* folded-in unit ("/mo") — keeps every tile's number on one baseline (audit T-4) */
+.snum .per { font-size: .62em; font-weight: var(--fw-regular); color: var(--mut); letter-spacing: 0; }
 .slab { font-size: 12.5px; line-height: var(--lh-snug); color: var(--mut); margin-top: 8px; }
 
 @media (max-width: 960px) {
@@ -385,7 +404,7 @@ a { color: inherit; }
 .fails { margin-top: 36px; }
 .fhead { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); margin-bottom: 14px; }
 .fail { display: grid; grid-template-columns: 44px 1fr; gap: 16px; padding: 16px 0; border-top: var(--border); }
-.fnum { font-family: var(--font-mono); font-size: 13px; color: var(--acc); padding-top: 2px; }
+.fnum { font-family: var(--font-mono); font-size: 13px; color: var(--acc-text); padding-top: 2px; }
 .fttl { font-weight: var(--fw-semibold); font-size: 15px; }
 .fles { font-size: var(--fs-sm); line-height: var(--lh-snug); color: var(--mut); margin-top: 5px; }
 
@@ -412,8 +431,12 @@ a { color: inherit; }
 .cs { padding: 28px; display: flex; flex-direction: column; gap: 0; }
 .cmeta { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
 .cco { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); }
+/* the year token is atomic — the company label wraps instead (audit T-3) */
+.cmeta .cco:last-child { white-space: nowrap; flex-shrink: 0; }
 .cttl { font-size: 20px; font-weight: var(--fw-semibold); letter-spacing: -.01em; margin: 14px 0 0; }
-.cres { font-size: 14.5px; margin-top: 8px; color: var(--acc); font-weight: var(--fw-medium); }
+/* result line in ink; only the numerals carry accent (audit V-4) */
+.cres { font-size: 14.5px; margin-top: 8px; color: var(--ink); font-weight: var(--fw-regular); }
+.cres .n { font-family: var(--font-mono); font-size: .95em; color: var(--acc-text); font-weight: var(--fw-semibold); }
 
 @media (max-width: 700px) {
   .cgrid { grid-template-columns: 1fr; }
@@ -465,9 +488,36 @@ a { color: inherit; }
 .titem.now .tdot { background: var(--acc); border-color: var(--acc); }
 .tyr { font-family: var(--font-mono); font-size: 12px; color: var(--mut); display: flex; gap: 10px; align-items: center; }
 .ttag { font-size: 9.5px; letter-spacing: .12em; border: var(--border); padding: 2px 6px; }
-.ttag.edu { color: var(--acc); border-color: var(--acc); }
+.ttag.edu { color: var(--acc-text); border-color: var(--acc); }
 .trole { font-size: 17px; font-weight: var(--fw-semibold); margin-top: 7px; }
 .tdesc { font-size: var(--fs-sm); color: var(--mut); margin-top: 4px; line-height: var(--lh-snug); max-width: 620px; }
+
+/* ---- zigzag layout (audit V-1a): center spine on desktop, entries
+   alternate sides so the right rail carries content; collapses back to
+   the classic single left rail ≤700px. Rows: .trow.L / .trow.R
+   (+ .now for the latest entry). Reuses .tyr/.ttag/.trole/.tdesc. ---- */
+.tl2 { position: relative; margin-top: 8px; }
+.tl2::before { content: ""; position: absolute; left: 50%; top: 4px; bottom: 4px; width: 1px; background: var(--ln); }
+.tl2 .trow { display: grid; grid-template-columns: 1fr 72px 1fr; margin: 0 0 34px; }
+.tl2 .trow:last-child { margin-bottom: 0; }
+.tl2 .titem2 { min-width: 0; }
+.tl2 .trow.L .titem2 { grid-column: 1; text-align: right; }
+.tl2 .trow.L .tyr { justify-content: flex-end; }
+.tl2 .trow.L .tdesc { margin-left: auto; }
+.tl2 .trow.R .titem2 { grid-column: 3; text-align: left; }
+.tl2 .tdot2 { grid-column: 2; grid-row: 1; align-self: start; justify-self: center; margin-top: 5px;
+              width: 9px; height: 9px; background: var(--bg); border: 2px solid var(--ink); border-radius: var(--radius-pill); }
+.tl2 .trow.now .tdot2 { background: var(--acc); border-color: var(--acc); }
+.tl2 .tdesc { max-width: 460px; }
+
+@media (max-width: 700px) {
+  .tl2::before { left: 4px; }
+  .tl2 .trow { grid-template-columns: 32px 1fr; margin-bottom: 30px; }
+  .tl2 .tdot2 { grid-column: 1; justify-self: start; }
+  .tl2 .trow.L .titem2, .tl2 .trow.R .titem2 { grid-column: 2; text-align: left; }
+  .tl2 .trow.L .tyr { justify-content: flex-start; }
+  .tl2 .trow.L .tdesc { margin-left: 0; }
+}
 
 /* ── assets/components/philosophy/philosophy.css ── */
 /* philosophy → "How I think" — 6-step operating loop (.hloop/.hstep) grouped
@@ -483,7 +533,7 @@ a { color: inherit; }
 .hphase .tick { width: 6px; height: 6px; }
 .hstep { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 26px 0; border-top: var(--border); }
 .hphase + .hstep { border-top: 0; padding-top: 0; }
-.hnum { font-family: var(--font-mono); font-size: 13px; color: var(--acc); padding-top: 4px; }
+.hnum { font-family: var(--font-mono); font-size: 13px; color: var(--acc-text); padding-top: 4px; }
 .httl { font-size: 18px; font-weight: var(--fw-semibold); letter-spacing: -.01em; }
 .hbody { font-size: var(--fs-sm); line-height: var(--lh-body); color: var(--mut); margin-top: 6px; max-width: 620px; }
 
@@ -491,7 +541,7 @@ a { color: inherit; }
    Left hairline rule keeps evidence distinct from body. */
 .hev { margin-top: 14px; border-left: 2px solid var(--ln); padding-left: 15px; display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
 .hln { display: block; background: none; border: 0; padding: 0; text-align: left; cursor: pointer; font-family: inherit; color: inherit; text-decoration: none; font-size: var(--fs-sm); line-height: var(--lh-snug); }
-.hpj { font-family: var(--font-mono); font-size: 12px; color: var(--acc); margin-right: 4px; white-space: nowrap; }
+.hpj { font-family: var(--font-mono); font-size: 12px; color: var(--acc-text); margin-right: 4px; white-space: nowrap; }
 .hq { color: var(--ink); font-weight: var(--fw-medium); }
 .hln:hover .hpj, .hln:focus-visible .hpj { text-decoration: underline; text-underline-offset: 3px; }
 
@@ -510,7 +560,7 @@ a { color: inherit; }
 /* legacy principle-card grid (still used by testimonial + styleguide) */
 .pgrid2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .pcard { padding: 26px; display: flex; flex-direction: column; gap: 0; }
-.pidx { font-family: var(--font-mono); font-size: 12px; color: var(--acc); }
+.pidx { font-family: var(--font-mono); font-size: 12px; color: var(--acc-text); }
 .pttl { font-size: 18px; font-weight: var(--fw-semibold); margin: 12px 0 0; letter-spacing: -.01em; }
 .pbody { font-size: var(--fs-sm); line-height: var(--lh-body); color: var(--mut); margin-top: 8px; }
 
@@ -526,6 +576,38 @@ a { color: inherit; }
 @media (hover: none), (pointer: coarse) {
   .hpj { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
   .hln:active { background: var(--soft); box-shadow: -8px 0 0 var(--soft), 8px 0 0 var(--soft); }
+}
+
+/* ---- sticky phase rail (audit V-1b): two-column grid on desktop — loop
+   left, a sticky mini-map of the 4 phases + 7 moves right. philosophy.js
+   highlights the current step and the rail doubles as jump nav. ---- */
+.phi-grid { display: grid; grid-template-columns: 1fr 240px; gap: 48px; align-items: start; }
+.phi-main { min-width: 0; }
+.hstep { scroll-margin-top: 90px; }
+.hrail { position: sticky; top: 96px; border-left: var(--border); padding-left: 20px; }
+.hrail .rphase { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); margin: 18px 0 8px; }
+.hrail .rphase:first-child { margin-top: 0; }
+.hrail a { display: block; font-size: 13.5px; color: var(--mut); text-decoration: none; padding: 3px 0; }
+.hrail a:hover { color: var(--ink); }
+.hrail a .rn { font-family: var(--font-mono); font-size: 11px; margin-right: 8px; }
+.hrail a.on { color: var(--ink); font-weight: var(--fw-medium); }
+.hrail a.on .rn { color: var(--acc-text); }
+@media (max-width: 960px) {
+  .phi-grid { grid-template-columns: 1fr; }
+  .hrail { display: none; }
+}
+
+/* ---- mobile receipt collapse (audit V-8): ≤700px each step shows its
+   curated first receipt; philosophy.js marks the rest .extra and injects
+   a .hmore toggle. Desktop always shows all receipts. ---- */
+.hmore { display: none; background: none; border: 0; padding: 0; cursor: pointer; font-family: var(--font-mono);
+         font-size: 12px; letter-spacing: .06em; color: var(--mut); text-align: left; }
+.hmore .pm { color: var(--acc-text); }
+.hmore:hover, .hmore:focus-visible { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 700px) {
+  .hev .hln.extra { display: none; }
+  .hev.exp .hln.extra { display: block; }
+  .hmore { display: block; }
 }
 
 /* ── assets/components/testimonial/testimonial.css ── */
@@ -579,7 +661,7 @@ a { color: inherit; }
    is stretched taller than its content (the 28px minimum gap lives on .ec-quote) */
 .ec-rule { border-top: 1px dashed var(--ln); margin: auto 0 20px; }
 
-.ec-name { font-weight: var(--fw-bold); font-size: 15px; letter-spacing: -.01em; color: var(--acc); }
+.ec-name { font-weight: var(--fw-bold); font-size: 15px; letter-spacing: -.01em; color: var(--acc-text); }
 .ec-role { font-size: 13px; color: var(--mut); margin-top: 5px; line-height: 1.5; }
 
 @media (max-width: 760px) {
@@ -611,7 +693,7 @@ a { color: inherit; }
 
 /* CTA that opens the "full list" modal (reuses the modal component via data-modal) */
 .bmore { margin-top: 16px; background: none; border: none; padding: 0; cursor: pointer; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); display: inline-flex; align-items: center; gap: 6px; }
-.bmore:hover { color: var(--acc); }
+.bmore:hover { color: var(--acc-text); }
 
 @media (max-width: 700px) {
   .beyond { grid-template-columns: 1fr; }
@@ -658,6 +740,31 @@ a { color: inherit; }
 }
 @media (prefers-reduced-motion: reduce) {
   .dock { transition: none; }
+}
+
+/* ── assets/components/chapters/chapters.css ── */
+/* chapters — section separation + wayfinding (from test-section-combo.html).
+   Alternating sections (.sec-alt) sit on a deeper surface tint so chapter
+   boundaries read as edges; a 2px accent progress bar under the nav and a
+   "You are in <section> NN/NN" chip give orientation. The chip appears with
+   body.past-hero (same signal as the dock), hides while the burger menu is
+   open, and drops to bottom-right on mobile — clear of the contact dock. */
+
+:root { --tint: color-mix(in srgb, var(--ink) 3%, var(--soft)); }  /* light needs the deeper shade */
+html.dark { --tint: color-mix(in srgb, var(--soft) 65%, var(--bg)); }
+
+.sec-alt { background: var(--tint); }
+
+.pbar { position: fixed; top: 60px; left: 0; height: 2px; width: 0; background: var(--acc); z-index: var(--z-nav); }
+
+.seclabel { position: fixed; top: 74px; right: 24px; z-index: var(--z-nav); display: none; align-items: baseline; gap: 12px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--mut); background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(6px); border: var(--border); padding: 6px 10px; }
+.seclabel b { color: var(--ink); font-weight: var(--fw-medium); }
+.seclabel .num { color: var(--acc-text); font-weight: var(--fw-medium); margin-left: auto; }
+body.past-hero .seclabel { display: inline-flex; }
+body:has(.mmenu.open) .seclabel { display: none; }
+
+@media (max-width: 700px) {
+  .seclabel { top: auto; bottom: calc(58px + env(safe-area-inset-bottom)); right: 12px; }  /* above the dock */
 }
 
 /* ── assets/components/modal/modal.css ── */
@@ -720,13 +827,16 @@ a { color: inherit; }
 .modal-doc { max-width: 660px; margin: 0 auto; padding: 40px 32px 56px; }
 .modal-doc .m-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
 .modal-doc h1 { font-size: clamp(26px, 4vw, 34px); font-weight: var(--fw-bold); letter-spacing: -.02em; line-height: 1.1; margin: 0 0 10px; }
+/* .m-title = the case-study display title, an h2 so the page keeps exactly
+   one h1 (the hero) while the modal is open — visually identical to h1 */
+.modal-doc .m-title { font-size: clamp(26px, 4vw, 34px); font-weight: var(--fw-bold); letter-spacing: -.02em; line-height: 1.1; margin: 0 0 10px; }
 .modal-doc .m-sub { font-size: 15px; color: var(--mut); line-height: 1.6; margin: 0 0 6px; }
 .modal-doc h2 { font-size: 19px; font-weight: var(--fw-semibold); letter-spacing: -.01em; margin: 34px 0 10px; }
 .modal-doc p { font-size: 15px; line-height: 1.65; margin: 0 0 14px; }
 .modal-doc ul { margin: 0 0 14px; padding-left: 18px; }
 .modal-doc li { font-size: 15px; line-height: 1.6; margin: 0 0 7px; }
 .modal-doc strong { font-weight: var(--fw-semibold); }
-.modal-doc .acc { color: var(--acc); font-weight: var(--fw-medium); }
+.modal-doc .acc { color: var(--acc-text); font-weight: var(--fw-medium); }
 .modal-doc code { font-family: var(--font-mono); font-size: 12.5px; background: var(--soft); padding: 1px 6px; border: 1px solid var(--ln); }
 .modal-doc pre { background: var(--soft); border: var(--border); padding: 14px 16px; overflow-x: auto; margin: 0 0 16px; }
 .modal-doc pre code { background: none; border: none; padding: 0; font-size: 12px; line-height: 1.7; white-space: pre; }
@@ -749,7 +859,7 @@ a { color: inherit; }
 
 /* doc-authorship / provenance note — signals "I wrote the strategy", not just "ran a test" */
 .modal-doc .m-note { display: flex; gap: 12px; background: var(--soft); border: var(--border); border-left: 2px solid var(--acc); padding: 14px 16px; margin: 0 0 18px; }
-.modal-doc .m-note .m-note-k { font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--acc); flex: none; padding-top: 2px; }
+.modal-doc .m-note .m-note-k { font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--acc-text); flex: none; padding-top: 2px; }
 .modal-doc .m-note p { font-size: 13.5px; line-height: 1.55; margin: 0; color: var(--ink); }
 
 /* comparison table — before/after channel shift, experiment phases, etc. */
@@ -759,7 +869,7 @@ a { color: inherit; }
 .modal-doc .m-table td + td, .modal-doc .m-table th + th { border-left: 1px solid var(--ln); }
 .modal-doc .m-table tbody tr:last-child td { border-bottom: none; }
 .modal-doc .m-table .num { font-family: var(--font-mono); }
-.modal-doc .m-table .up { color: var(--acc); }
+.modal-doc .m-table .up { color: var(--acc-text); }
 
 /* horizontal bar chart — recovery-decile churn (real data, redrawn clean) */
 .modal-doc .m-chart { border: var(--border); padding: 16px 18px; margin: 4px 0 8px; display: grid; gap: 9px; }
@@ -769,7 +879,7 @@ a { color: inherit; }
 .modal-doc .m-bar span { display: block; height: 100%; background: var(--mut); }
 .modal-doc .m-row.hot .m-bar span { background: var(--acc); }
 .modal-doc .m-row .m-v { font-family: var(--font-mono); font-size: 11.5px; text-align: right; }
-.modal-doc .m-row.hot .m-v { color: var(--acc); font-weight: var(--fw-semibold); }
+.modal-doc .m-row.hot .m-v { color: var(--acc-text); font-weight: var(--fw-semibold); }
 
 /* phased journey — a compact vertical timeline inside the doc */
 .modal-doc .m-phases { list-style: none; padding: 0; margin: 6px 0 20px; }
@@ -780,11 +890,11 @@ a { color: inherit; }
 .modal-doc .m-ph-t { font-size: 14.5px; font-weight: var(--fw-semibold); margin: 2px 0 4px; letter-spacing: -.01em; }
 .modal-doc .m-ph-t .m-when { font-family: var(--font-mono); font-weight: var(--fw-regular); font-size: 11px; color: var(--mut); margin-left: 8px; letter-spacing: 0; }
 .modal-doc .m-phases p { font-size: 13.5px; line-height: 1.55; margin: 0; color: var(--mut); }
-.modal-doc .m-phases p .acc { color: var(--acc); }
+.modal-doc .m-phases p .acc { color: var(--acc-text); }
 
 /* affordance on a clickable card */
 .card[data-modal] { cursor: pointer; }
-.cmore { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--acc); margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; }
+.cmore { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--acc-text); margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; }
 .card[data-modal]:hover .cmore { text-decoration: underline; text-underline-offset: 3px; }
 
 /* mobile: window fills the screen, gutters collapse */
@@ -823,7 +933,7 @@ a { color: inherit; }
 /* Text */
 .mono { font-family: var(--font-mono); }
 .mut  { color: var(--mut); }
-.acc  { color: var(--acc); }
+.acc  { color: var(--acc-text); }
 .fw6  { font-weight: var(--fw-semibold); }
 .fs11 { font-size: 11px; }
 .fs12 { font-size: 12px; }

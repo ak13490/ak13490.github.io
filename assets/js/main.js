@@ -25,19 +25,21 @@
     });
   }
 
-  /* ---- Mobile menu ---- */
+  /* ---- Mobile menu (burger morphs to ✕ via CSS; scrim closes on tap) ---- */
   var burger = document.getElementById('burger');
   var mmenu = document.getElementById('mmenu');
   if (burger && mmenu) {
-    burger.addEventListener('click', function () {
-      var open = mmenu.classList.toggle('open');
+    var scrim = document.getElementById('mscrim');
+    var setMenu = function (open) {
+      mmenu.classList.toggle('open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    burger.addEventListener('click', function () {
+      setMenu(!mmenu.classList.contains('open'));
     });
+    if (scrim) scrim.addEventListener('click', function () { setMenu(false); });
     mmenu.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
-        mmenu.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-      });
+      a.addEventListener('click', function () { setMenu(false); });
     });
   }
 

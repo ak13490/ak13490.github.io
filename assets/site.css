@@ -759,7 +759,9 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
   /* rail becomes a swipeable snap track */
   .bc-rail { display: flex; overflow-x: auto; gap: 12px; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .bc-rail::-webkit-scrollbar { display: none; }
-  .bc-item { flex: 0 0 38vw; scroll-snap-align: start; }
+  /* 2.5 posters visible: 2 full + 2 gaps + a half, measured against the
+     card (not the viewport) so it holds at any phone width */
+  .bc-item { flex: 0 0 calc((100% - 24px) / 2.5); scroll-snap-align: start; }
   .bc-wall { grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 10px; }
 }
 

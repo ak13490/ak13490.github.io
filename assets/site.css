@@ -437,6 +437,9 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
 /* result line in ink; only the numerals carry accent (audit V-4) */
 .cres { font-size: 14.5px; margin-top: 8px; color: var(--ink); font-weight: var(--fw-regular); }
 .cres .n { font-family: var(--font-mono); font-size: .95em; color: var(--acc-text); font-weight: var(--fw-semibold); }
+/* cross-team collaborator microline — same voice as .cco meta; only on cards
+   whose case study names the teams */
+.cwith { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--mut); margin: 10px 0 0; }
 
 @media (max-width: 700px) {
   .cgrid { grid-template-columns: 1fr; }
@@ -673,7 +676,7 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
 /* ── assets/components/beyond/beyond.css ── */
 /* beyond — "beyond work" 2-up grid: mono heading, recommendation list,
    note text. Composes with .card. */
-.beyond { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.beyond { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .bcard { padding: 26px; }
 .bhead { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); }
 .blist { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 10px; }
@@ -696,7 +699,68 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
 .bmore:hover { color: var(--acc-text); }
 
 @media (max-width: 700px) {
-  .beyond { grid-template-columns: 1fr; }
+  /* single column; the two recommendation cards share a row height so the
+     stack reads as a matched pair (family/NGO stay content-sized) */
+  .beyond { grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(2, 1fr) auto auto; }
+}
+
+/* ── cover treatments (O6): anime as a poster rail, books as a library ledger.
+   Covers are self-hosted WebP in assets/img/covers/ over a typographic
+   fallback, so a missing file degrades to styled type rather than a gap.
+   Full colour at rest everywhere — hover adds motion only. ── */
+
+/* the cover primitive: type underneath, image on top */
+.bc-cover { position: relative; overflow: hidden; background: var(--soft); border: var(--border-ink); aspect-ratio: 2 / 3; }
+.bc-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+.bc-cvt { position: absolute; inset: 0; padding: 9%; display: flex; flex-direction: column; justify-content: space-between; z-index: 1; }
+.bc-cvt b { font-size: 11px; font-weight: var(--fw-bold); line-height: 1.15; }
+.bc-cvt i { font-style: normal; font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: .06em; color: var(--mut); }
+.bc-cover::after { content: ""; position: absolute; right: 7px; bottom: 7px; width: 5px; height: 5px; background: var(--acc); z-index: 3; }
+
+/* anime — 3-up rail */
+.bc-rail { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
+.bc-item { min-width: 0; }
+.bc-item .bc-cover { transition: transform 200ms ease; }
+.bc-item:hover .bc-cover { transform: translateY(-4px); }
+.bc-ttl { font-size: 13px; font-weight: var(--fw-semibold); margin: 10px 0 0; line-height: 1.3; }
+.bc-why { font-size: 12px; line-height: var(--lh-snug); color: var(--mut); margin: 4px 0 0; }
+
+/* books — ledger rows */
+.bc-ledger { margin-top: 14px; }
+.bc-row { display: grid; grid-template-columns: 40px 52px minmax(0, 1fr); gap: 14px; align-items: start; padding: 14px 0; border-top: var(--border); }
+.bc-ledger .bc-row:first-child { border-top: 0; padding-top: 4px; }
+.bc-idx { font-family: var(--font-mono); font-size: 11.5px; color: var(--acc-text); padding-top: 2px; }
+.bc-row .bc-cover { transition: transform 200ms ease; }
+.bc-row:hover .bc-cover { transform: rotate(-3deg) scale(1.04); }
+.bc-row:hover .bc-ttl { text-decoration: underline; text-decoration-color: var(--acc); text-underline-offset: 3px; }
+.bc-row .bc-ttl { margin: 0; font-size: 14px; }
+.bc-meta { font-family: var(--font-mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: .12em; color: var(--mut); margin: 4px 0 0; }
+
+/* modal: anime poster wall */
+.bc-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 12px; margin-top: 8px; }
+.bc-poster { min-width: 0; }
+.bc-poster .bc-cover { transition: transform 200ms ease; }
+.bc-poster:hover .bc-cover { transform: scale(1.03); }
+.bc-cap { font-family: var(--font-mono); font-size: 9px; line-height: 1.4; text-transform: uppercase; letter-spacing: .06em; color: var(--mut); margin: 6px 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* modal: books catalogue */
+.bc-group { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: var(--acc-text); margin: 22px 0 2px; }
+.bc-group:first-of-type { margin-top: 6px; }
+.bc-cat .bc-row { grid-template-columns: 40px 40px minmax(0, 1fr); }
+.bc-cat .bc-cvt { padding: 7%; }
+.bc-cat .bc-cvt b { font-size: 7px; }
+.bc-cat .bc-cvt i { display: none; }
+.bc-auth { font-family: var(--font-mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: .1em; color: var(--mut); margin: 3px 0 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bc-item .bc-cover, .bc-row .bc-cover, .bc-poster .bc-cover { transition: none; }
+}
+@media (max-width: 700px) {
+  /* rail becomes a swipeable snap track */
+  .bc-rail { display: flex; overflow-x: auto; gap: 12px; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .bc-rail::-webkit-scrollbar { display: none; }
+  .bc-item { flex: 0 0 38vw; scroll-snap-align: start; }
+  .bc-wall { grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 10px; }
 }
 
 /* ── assets/components/contact/contact.css ── */

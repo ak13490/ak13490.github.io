@@ -757,7 +757,10 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
 }
 @media (max-width: 700px) {
   /* rail becomes a swipeable snap track */
-  .bc-rail { display: flex; overflow-x: auto; gap: 12px; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  /* proximity, not mandatory: mandatory yanks the rail to a poster edge on every
+     swipe, which reads as sharp. proximity keeps the tidy alignment only when the
+     thumb already stops near one, so momentum scrolling stays free. */
+  .bc-rail { display: flex; overflow-x: auto; gap: 12px; scroll-snap-type: x proximity; scroll-padding-left: 0; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .bc-rail::-webkit-scrollbar { display: none; }
   /* 2.5 posters visible: 2 full + 2 gaps + a half, measured against the
      card (not the viewport) so it holds at any phone width */

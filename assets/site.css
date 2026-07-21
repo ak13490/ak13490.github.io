@@ -1093,7 +1093,12 @@ html.dark #timeline .mw-cell img[src$="viacom18.svg"] { filter: grayscale(1) inv
    each card carries an .ec-mark <svg> with four <use href="#qpath"> layers. */
 
 :root { --ec-gold: #E0A63C; --ec-qfill: #F9E2DB; --ec-qline: #E7E5DF; }
-:root.dark { --ec-gold: #E0A63C; --ec-qfill: #33221D; --ec-qline: #2E2E29; }
+/* Dark: the old #33221D was a warm brown that read as a muddy blob on the near-black
+   card rather than a watermark. A watermark should be a faint LIFT of the surface it
+   sits on, so these are neutral tints of --ink instead of a colour of their own. */
+:root.dark { --ec-gold: #E0A63C;
+             --ec-qfill: color-mix(in srgb, var(--ink) 6%, transparent);
+             --ec-qline: color-mix(in srgb, var(--ink) 11%, transparent); }
 
 /* items stretch (grid default) so both cards in a row share the taller card's
    height; the attribution block is pushed to the card bottom via .ec-rule's
@@ -1141,6 +1146,27 @@ html.dark #timeline .mw-cell img[src$="viacom18.svg"] { filter: grayscale(1) inv
   .ec { padding: 32px 26px 28px; }
   .ec-context { font-size: 18px; }
 }
+
+/* ── VISUAL REFRESH (21 Jul 2026) — verify who said it ──
+   Name + role on the left of the attribution row, a quiet LinkedIn button on the
+   right linking to that person's profile, so a reader can check the person is real
+   and that their stated title matches. Mono rather than LinkedIn blue (a second
+   brand colour would be the loudest thing in the section, and the design system
+   allows one accent) and rather than accent red (.ec-name is already accent — red
+   buttons beside red names double up). Same language as .btn2 and the timeline marks. */
+.ec-foot { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.ec-who { min-width: 0; }
+.ec-li {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 32px; height: 32px; margin-top: 2px;                 /* 32px = comfortable tap target */
+  border: var(--border); color: var(--mut); text-decoration: none;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+}
+.ec-li:hover { color: var(--ink); border-color: var(--ink); background: var(--soft); }
+.ec-li:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+.ec-li .li-mark { width: 15px; height: 15px; fill: currentColor; flex: none; }
+@media (prefers-reduced-motion: reduce) { .ec-li { transition: none; } }
 
 /* ── assets/components/beyond/beyond.css ── */
 /* beyond — "beyond work" 2-up grid: mono heading, recommendation list,

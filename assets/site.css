@@ -182,6 +182,27 @@ a { color: inherit; }
 .tbtn { background: none; border: var(--border); color: var(--mut); font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; padding: 9px 16px; cursor: pointer; }
 .tbtn:hover { color: var(--ink); border-color: var(--ink); }
 
+/* ── VISUAL REFRESH (20 Jul 2026) — micro-interactions.
+   .ar nudges right inside any hovered card/button; quiet links grow an
+   underline left→right. Reduced-motion opts out of both. ── */
+.card.cs:hover .ar,
+.btn:hover .ar,
+.btn2:hover .ar,
+.cmore .ar { transition: transform var(--dur-fast) var(--ease); }
+.card.cs:hover .ar,
+.btn:hover .ar,
+.btn2:hover .ar { transform: translateX(4px); }
+.rlink {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat;
+  transition: background-size .18s var(--ease), color var(--dur-fast) var(--ease);
+}
+.rlink:hover { background-size: 100% 1px; }
+@media (prefers-reduced-motion: reduce) {
+  .card.cs, .ar, .rlink { transition: none; }
+  .card.cs:hover { transform: none; }
+}
+
 /* ── assets/components/theme-toggle/theme-toggle.css ── */
 /* theme-toggle — icon button that flips light/dark. Behavior in main.js;
    theme tokens in tokens.css (:root.dark). Sun shows in dark, moon in light. */
@@ -321,6 +342,20 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
   .motif { display: none; }
 }
 
+
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL REFRESH (20 Jul 2026) — static ID card for the MOBILE hero
+   Below 960px the draggable lanyard is hidden, so the phone hero had no
+   image at all. This is the same badge, parked: no physics, no JS.
+   ══════════════════════════════════════════════════════════════════ */
+#top .hero-idcard { width: 228px; background: var(--card); border: var(--border-ink); box-shadow: var(--shadow-block); transform: rotate(-2deg); margin: 30px auto 12px; display: none; }
+#top .hero-idcard .idface { width: 164px; height: 176px; margin-top: 14px; }
+#top .hero-idcard .idbar { height: 22px; }
+/* real rule: card below 960px (inverse of the site's .motif), chip at/above 960px */
+@media (max-width: 959px) { #top .hero-idcard { display: block; }
+}
+@media (min-width: 960px) { }
+
 /* ── assets/components/lanyard/lanyard.css ── */
 /* lanyard — the hero's ID badge hanging from a physical band (replaces the
    static rotated motif). Band → flat clamp → card; 2D rope physics with
@@ -363,22 +398,42 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
 }
 
 /* ── assets/components/stats/stats.css ── */
-/* stats — bordered headline-number grid. 5→2→1 columns as width shrinks. */
-.stats { display: grid; grid-template-columns: repeat(5, 1fr); border: var(--border); }
-.stat { padding: 26px 22px; border-right: var(--border); min-width: 0; }
+/* stats — four self-labelled proof tiles.
+   Each tile carries its own mono category kicker (.skick) above a hairline, so the
+   four facts read as INDEPENDENT PEERS. This is deliberate: a headline number with
+   smaller stats attached reads as parent → children, which implied the AI build
+   caused the revenue figures (explored in test-stats-block-v2.html). Equal tiles
+   plus per-tile category tags remove that reading entirely.
+   The AI tile (.stat.ai) is accented — it's the positioning bet, presented as a
+   parallel category rather than a result of the others.
+   Numbers animate via the count-up in main.js (#statsCount + data-count attrs).
+   4 → 2 → 1 columns as width shrinks. */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); border: var(--border); }
+.stat { padding: 24px 22px 26px; border-right: var(--border); min-width: 0; }
 .stat.last { border-right: none; }
-.snum { font-family: var(--font-mono); font-size: clamp(24px, 2.6vw, 34px); font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); white-space: nowrap; }
-/* folded-in unit ("/mo") — keeps every tile's number on one baseline (audit T-4) */
-.snum .per { font-size: .62em; font-weight: var(--fw-regular); color: var(--mut); letter-spacing: 0; }
-.slab { font-size: 12.5px; line-height: var(--lh-snug); color: var(--mut); margin-top: 8px; }
+
+/* category tag — tells the reader what KIND of proof this tile is */
+.skick { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--mut); padding-bottom: 12px; margin-bottom: 16px; border-bottom: var(--border); }
+.stat.ai .skick { color: var(--acc); border-bottom-color: var(--acc); }
+
+.snum { font-size: clamp(26px, 3vw, 36px); font-weight: var(--fw-bold); letter-spacing: -.03em; line-height: 1; white-space: nowrap; }
+.stat.ai .snum { color: var(--acc); }
+/* folded-in units ("+", "/mo") — smaller, muted, mono so the figure stays dominant.
+   Written into data-suffix as markup so the count-up re-renders them each frame. */
+.snum .su, .snum .per { font-family: var(--font-mono); font-size: .46em; font-weight: var(--fw-medium); color: var(--mut); letter-spacing: 0; }
+
+.slab { font-size: 12.5px; line-height: var(--lh-snug); color: var(--mut); margin-top: 12px; }
 
 @media (max-width: 960px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
   .stat { border-bottom: var(--border); }
+  .stat:nth-child(2n) { border-right: none; }
+  .stat:nth-last-child(-n+2) { border-bottom: none; }
 }
 @media (max-width: 700px) {
   .stats { grid-template-columns: 1fr; }
-  .stat { border-right: none; }
+  .stat { border-right: none; border-bottom: var(--border); }
+  .stat:last-child { border-bottom: none; }
 }
 
 /* ── assets/components/thread/thread.css ── */
@@ -424,6 +479,95 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
 /* #ai-failures — receipt deep-link target; clear the sticky nav on arrival */
 .fails { scroll-margin-top: 96px; }
 
+
+
+/* ── VISUAL REFRESH (20 Jul 2026) — failure cases as incident tickets ── */
+/* --- QW-6 incident tickets (merged with the arch cross-highlight rows) --- */
+#ai .fails-tix { margin-top: 6px; }
+#ai .fails-tix .fhead { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); margin-bottom: 14px; }
+#ai .tix-row { display: grid; grid-template-columns: 52px 1fr; gap: 16px; padding: 16px 14px; border-top: var(--border); border-left: 2px solid var(--acc);
+  transition: background var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); cursor: default; }
+#ai .tix-row:hover,
+#ai .tix-row.hl { background: var(--soft); box-shadow: inset 3px 0 0 var(--acc); }
+#ai .tix-row:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+#ai .tix-idx { font-family: var(--font-mono); font-size: 13px; font-weight: var(--fw-semibold); color: var(--acc-text); padding-top: 2px; }
+#ai .tix-ttl { font-weight: var(--fw-semibold); font-size: 15px; }
+#ai .tix-les { font-size: var(--fs-sm); line-height: var(--lh-snug); color: var(--mut); margin-top: 5px; }
+#ai .tix-chip { display: inline-block; margin-top: 10px; font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; background: var(--soft); color: var(--mut); border: var(--border); }
+
+/* ── assets/components/arch/arch.css ── */
+/* arch — the AI Support Resolution Agent request-path diagram.
+   Wide drawing ≥760px; below that a vertical reflow of the SAME topology
+   (lanes: markers left · column centre · escalate bypass right) so a phone
+   never scrolls sideways. F-markers cross-highlight with the ticket rows. */
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL REFRESH (20 Jul 2026) — failure cases as incident tickets + the architecture diagram
+   ══════════════════════════════════════════════════════════════════ */
+#ai .ai-off { display: none; }
+/* --- TRUE architecture diagram (test-arch-v2, scoped) --- */
+#ai .arch-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 28px; padding-bottom: 6px; }
+#ai .arch-svg { display: block; width: 100%; min-width: 900px; max-width: 1040px; height: auto; margin: 0 auto; }
+#ai .n-box { fill: var(--card); stroke: var(--ink); stroke-width: 1.6; }
+#ai .flow { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#ai .eval-frame { fill: none; stroke: var(--mut); stroke-width: 1.5; stroke-dasharray: 5 4; }
+#ai .fb { fill: none; stroke: var(--mut); stroke-width: 1.4; stroke-dasharray: 4 4; stroke-linecap: round; stroke-linejoin: round; }
+#ai .n-l1 { font-family: var(--font-mono); font-size: 11px; font-weight: var(--fw-semibold); letter-spacing: .1em; fill: var(--ink); }
+#ai .n-l2 { font-family: var(--font-mono); font-size: 8px; font-weight: var(--fw-regular); letter-spacing: .05em; fill: var(--mut); }
+#ai .eval-lbl { font-family: var(--font-mono); font-size: 10.5px; font-weight: var(--fw-medium); letter-spacing: .12em; fill: var(--mut); }
+#ai .eval-sub { font-family: var(--font-mono); font-size: 8px; letter-spacing: .05em; fill: var(--mut); }
+#ai .eval-cap { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: .05em; fill: var(--mut); }
+#ai .bypass { fill: none; stroke: var(--acc); stroke-width: 1.6; stroke-dasharray: 5 4; stroke-linecap: round; stroke-linejoin: round; }
+#ai .bypass-head { fill: none; stroke: var(--acc); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#ai .acc-lbl { font-family: var(--font-mono); font-size: 8.5px; font-weight: var(--fw-medium); letter-spacing: .08em; fill: var(--acc); }
+#ai .pii-lbl { font-family: var(--font-mono); font-size: 9px; font-weight: var(--fw-medium); letter-spacing: .08em; fill: var(--acc); }
+#ai .marker { cursor: pointer; }
+#ai .marker .m-dot { fill: var(--acc); transform-box: fill-box; transform-origin: center; transition: transform var(--dur-fast,.2s) var(--ease,ease); }
+#ai .marker .m-lbl { font-family: var(--font-mono); font-size: 10px; font-weight: var(--fw-medium); letter-spacing: .1em; fill: var(--mut); transition: fill var(--dur-fast,.2s) var(--ease,ease); }
+#ai .marker.hl .m-dot { transform: scale(1.55); }
+#ai .marker.hl .m-lbl { fill: var(--acc); }
+#ai .marker:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; border-radius: 2px; }
+#ai .arch-svg:not(.arch-vert) .ln-draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+#ai .arch-svg.drawn .ln-draw { stroke-dashoffset: 0; transition: stroke-dashoffset 1s var(--ease,ease); }
+#ai .arch-svg:not(.arch-vert) .fade { opacity: 0; }
+#ai .arch-svg.drawn .fade { opacity: 1; transition: opacity .5s var(--ease,ease); }
+@media (prefers-reduced-motion: reduce) {
+  #ai .arch-svg .ln-draw { stroke-dashoffset: 0 !important; }
+#ai .arch-svg .fade { opacity: 1 !important; }
+#ai .arch-svg .ln-draw, #ai .arch-svg .fade { transition: none !important; }
+}
+#ai .arch-legend { font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--mut); margin: 22px 0 6px; display: flex; align-items: center; gap: 8px; }
+#ai .arch-legend .lg-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--acc); display: inline-block; flex: 0 0 auto; }
+#ai .arch-foot { margin-top: 22px; }
+#ai .arch-foot p { font-family: var(--font-mono); font-size: 10.5px; line-height: 1.7; letter-spacing: .04em; color: var(--mut); margin: 0 0 6px; overflow-wrap: anywhere; }
+/* ── A-2 · VERTICAL REFLOW (owner's pick for mobile, 19 Jul) ──
+   ≥760px keeps the wide diagram exactly as approved; below that it is replaced
+   by a top-to-bottom redraw of the same topology built on lanes (markers left,
+   column centre, bypass right) so nothing crosses. */
+#ai .arch-vert { display: none; }
+@media (max-width: 760px) {
+  #ai .arch-scroll { display: none; }
+#ai .arch-vert {
+    display: block; width: 100%; min-width: 0; max-width: 320px; height: auto; margin: 18px auto 0;
+  }
+}
+/* the vertical draws its own arrowheads as separate paths — without these they
+   default to fill:black and vanish on dark */
+#ai .flow-head { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#ai .fb-head { fill: none; stroke: var(--mut); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+/* Staggered top-to-bottom reveal, as a PROGRESSIVE ENHANCEMENT.
+   The diagram is visible by default; JS adds .anim only when it can guarantee it
+   will also fire the reveal. Without that guard a failed observer left every node
+   at opacity 0 — i.e. an invisible diagram — which is a far worse failure than
+   simply not animating. */
+#ai .arch-vert.anim .fade { opacity: 0; }
+#ai .arch-vert.anim .ln-draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+#ai .arch-vert.anim.drawn .fade { opacity: 1; transition: opacity .4s var(--ease) calc(var(--i, 0) * 45ms); }
+#ai .arch-vert.anim.drawn .ln-draw { stroke-dashoffset: 0; transition: stroke-dashoffset .45s var(--ease) calc(var(--i, 0) * 45ms); }
+@media (prefers-reduced-motion: reduce) {
+  #ai .arch-vert.anim .fade { opacity: 1; }
+#ai .arch-vert.anim .ln-draw { stroke-dashoffset: 0; }
+}
+
 /* ── assets/components/case-study/case-study.css ── */
 /* case-study — 2-up grid of PM case cards: company/date meta, title,
    accented result line. Composes with .card and reuses chip/. */
@@ -443,6 +587,99 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
 
 @media (max-width: 700px) {
   .cgrid { grid-template-columns: 1fr; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL REFRESH (20 Jul 2026) — paper-clip photo (desktop) + 1:1 thumbnail (mobile), card lift, year in the footer
+   ══════════════════════════════════════════════════════════════════ */
+#work .cthumb, #work .polaroid { display: none; }
+#work .cthumb { aspect-ratio: 1 / 1; overflow: hidden; border: var(--border); margin-bottom: 14px; background: var(--soft); }
+#work .cthumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+#work .polaroid img { width: 100%; height: 117px; object-fit: cover; display: block; }
+/* O4: year marker relocated bottom-right (desktop polaroid state only). .cfoot
+   wraps the case-study link + a duplicate, aria-hidden .cyr year token — the
+   real .cco year inside .cmeta stays the sole screen-reader-visible copy at
+   all times (only visually clipped, never removed from the tree). Structural
+   wrapper + hidden-by-default .cyr apply everywhere so OFF / mobile markup
+   renders identically to before (.cyr display:none, .cfoot ≈ old .cmore spacing). */
+#work .cfoot { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 16px; }
+#work .cmore { margin-top: 0; }
+#work .cyr { display: none; }
+/* owner: heading and impact line sat too close — open the gap (ON mode only;
+   OFF keeps today's 8px from case-study.css) */
+#work .cres { margin-top: 14px; }
+/* card 1 only: owner-approved retitle "New-player growth & early VIPs" —
+   matches the case study's own two-fold framing (grow the broad new-player
+   base AND the early-VIP inflow) and never wraps 3-deep against the
+   polaroid clearance. Shown in ON mode at every width for consistency;
+   .cttl-full (today's wording) stays for the OFF state and screen readers.
+   The modal keeps the full original title. */
+#work .cttl-short { display: none; }
+#work .cttl-full {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+#work .cttl-short { display: inline; }
+/* ON, mobile / coarse pointer → Option-1 visible square thumbnail */
+#work .cthumb { display: block; }
+/* ON, desktop + fine hover pointer → PAPER-CLIPPED (owner's pick, 19 Jul):
+   an accent wire clip straddles the card's top-right edge; the polaroid hangs
+   from it at −5° and swings to vertical on hover around the clip's grip point.
+   Wire sandwich: outer loop behind the photo (.wk-cb), inner leg in front
+   (.wk-cf) — both <use> the shared defs paths and inherit the accent stroke. */
+#work .wk-hang { display: none; }
+@media (min-width: 960px) and (hover: hover) and (pointer: fine) {
+  #work .cthumb { display: none; }
+#work .cs { position: relative; overflow: visible; margin-top: 34px; padding-top: 28px; }
+#work .wk-hang { display: block; position: absolute; top: -26px; right: 14px; z-index: 2; }
+#work .polaroid {
+    display: block; position: relative; z-index: 2; width: 124px; margin-top: 16px;
+    background: var(--card); border: var(--border-ink); box-shadow: var(--shadow-block);
+    padding: 4px; transform: rotate(-5deg); transform-origin: 78% 3%;
+    transition: transform .2s var(--ease);
+  }
+#work .wk-clip {
+    position: absolute; top: 0; right: 14px; width: 26px; height: 42px;
+    transform: rotate(14deg); overflow: visible;
+    fill: none; stroke: var(--acc); stroke-width: 2.6;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+#work .wk-cb { z-index: 1; opacity: .72; }
+#work .wk-cf { z-index: 3; }
+/* text clearance for the hang's ~150px footprint (124px photo + inset + tilt) */
+  #work .cmeta,
+  #work .cttl,
+  #work .cres { padding-right: 152px; }
+/* year leaves the top meta row visually (kept for screen readers via the
+     clip technique below) and reappears via the aria-hidden .cyr on the
+     bottom link row, mono/muted like the original */
+  #work .cmeta .cco:last-child {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+#work .cyr { display: inline; }
+/* hover/focus: the photo swings upright on the clip, in step with the card lift */
+  #work .cs:hover .polaroid,
+  #work .cs:focus-within .polaroid,
+  #work .cs:focus-visible .polaroid { transform: rotate(0deg); }
+}
+/* reduced-motion: keep it tilted, no swing animation (chosen over instant-straight) */
+@media (prefers-reduced-motion: reduce) and (min-width: 960px) and (hover: hover) and (pointer: fine) {
+  #work .polaroid { transition: none; }
+#work .cs:hover .polaroid,
+  #work .cs:focus-within .polaroid,
+  #work .cs:focus-visible .polaroid { transform: rotate(-5deg); }
+}
+
+/* ── VISUAL REFRESH (20 Jul 2026) — the card lifts on hover/focus.
+   Offset print-shadow, matching the ID-card language; transform only. ── */
+.card.cs { transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+.card.cs:hover,
+.card.cs:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--ink);
+  box-shadow: 6px 6px 0 color-mix(in srgb, var(--ink) 14%, transparent);
 }
 
 /* ── assets/components/cursor-image/cursor-image.css ── */
@@ -522,6 +759,92 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
   .tl2 .trow.L .tdesc { margin-left: 0; }
 }
 
+
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL REFRESH (20 Jul 2026) — company marks (desktop) · orgs wall (mobile) · accent ring on education milestones
+   ══════════════════════════════════════════════════════════════════ */
+#timeline .mk-line { display: flex; gap: 12px; margin: 12px 0 10px; }
+#timeline .tl2 .trow.L .mk-line { justify-content: flex-end; }
+#timeline .tl2 .trow.R .mk-line { justify-content: flex-start; }
+#timeline .mk-logo { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; line-height: 0; }
+/* OPTICAL SIZING (19 Jul): uniform 30px height made wide wordmarks enormous and
+   square badges tiny. Heights are now tuned per logo so every mark carries
+   similar visual weight; widths fall out of each file's aspect ratio. */
+/* — shared tint rules: apply to BOTH the per-entry marks and the mobile wall — */
+#timeline .mk-logo img,
+#timeline .mw-cell img { display: block; width: auto; filter: brightness(0); opacity: .65; }
+html.dark #timeline .mk-logo img,
+html.dark #timeline .mw-cell img { filter: brightness(0) invert(1); opacity: .7; }
+/* Opaque badges: brightness(0) would flatten them to blobs — keep grayscale. */
+#timeline .mk-logo img[src$="narayana.webp"], #timeline .mw-cell img[src$="narayana.webp"],
+#timeline .mk-logo img[src$="fastfilmz.webp"], #timeline .mw-cell img[src$="fastfilmz.webp"],
+#timeline .mk-logo img[src$="a23.webp"], #timeline .mw-cell img[src$="a23.webp"],
+html.dark #timeline .mk-logo img[src$="narayana.webp"], html.dark #timeline .mw-cell img[src$="narayana.webp"],
+html.dark #timeline .mk-logo img[src$="fastfilmz.webp"], html.dark #timeline .mw-cell img[src$="fastfilmz.webp"],
+html.dark #timeline .mk-logo img[src$="a23.webp"], html.dark #timeline .mw-cell img[src$="a23.webp"] { filter: grayscale(1); opacity: .9; }
+/* Viacom18: the "18" is a WHITE KNOCKOUT inside a colored shape — brightness(0)
+   turned shape and knockout both black, erasing the 18. Grayscale preserves the
+   knockout; invert flips it correctly for dark. */
+#timeline .mk-logo img[src$="viacom18.svg"],
+#timeline .mw-cell img[src$="viacom18.svg"] { filter: grayscale(1); opacity: .8; }
+html.dark #timeline .mk-logo img[src$="viacom18.svg"],
+html.dark #timeline .mw-cell img[src$="viacom18.svg"] { filter: grayscale(1) invert(1); opacity: .8; }
+/* desktop per-entry mark heights */
+#timeline .mk-logo img[src$="viacom18.svg"]           { height: 15px; }
+/* very wide wordmark */
+#timeline .mk-logo img[src$="tarams.svg"]             { height: 18px; }
+#timeline .mk-logo img[src$="interview-kickstart.svg"]{ height: 19px; }
+#timeline .mk-logo img[src$="iiit-h.webp"]            { height: 34px; }
+/* stacked lockup */
+#timeline .mk-logo img[src$="hdw.webp"]               { height: 30px; }
+/* stacked lockup */
+#timeline .mk-logo img[src$="a23.webp"]               { height: 26px; }
+/* square badge */
+#timeline .mk-logo img[src$="isb.svg"]                { height: 22px; }
+/* emblem + wordmark lockup */
+#timeline .mk-logo img[src$="narayana.webp"],
+#timeline .mk-logo img[src$="fastfilmz.webp"]         { height: 24px; }
+/* square badges */
+#timeline .mk-ph { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; border: 1px dashed var(--ln); padding: 0 10px; height: 24px; display: inline-flex; align-items: center; color: var(--mut); white-space: nowrap; }
+/* ── E-3 · SPINE (owner's pick, 20 Jul) ──
+   ISB and IIIT-H are marked in the timeline's OWN vocabulary — an accent ring on
+   their dot — rather than by inflating the logos. Distinct from .trow.now, which
+   is a SOLID accent dot ("you are here"); a ring reads as "milestone". Logos,
+   colour count and layout are all untouched. Works on the mobile rail too. */
+#timeline .tl2 .trow.edu-row .tdot2 {
+  background: var(--bg);
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 16%, transparent);
+}
+/* ── MOBILE (owner's pick, 19 Jul): M-3 "ORGS WALL" ──
+   Per-entry marks crowded the single column, so below 760px they come off and
+   the brands appear ONCE as a compact wall under the heading; entries stay
+   plain. Desktop is unaffected. Wall is aria-hidden — every org is named in the
+   timeline text right below it, so this is decorative duplication. */
+#timeline .mwall { display: none; }
+@media (max-width: 760px) {
+  #timeline .mk-line { display: none; }
+#timeline .mwall {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px;
+    border: var(--border); padding: 14px 16px; margin: 0 0 26px;
+  }
+}
+#timeline .mw-cell { display: inline-flex; align-items: center; line-height: 0; }
+#timeline .mw-cell img { height: 16px; }
+#timeline .mw-cell img[src$="narayana.webp"],
+#timeline .mw-cell img[src$="fastfilmz.webp"],
+#timeline .mw-cell img[src$="iiit-h.webp"] { height: 20px; }
+#timeline .mw-cell img[src$="viacom18.svg"] { height: 13px; }
+#timeline .mw-cell img[src$="hdw.webp"] { height: 22px; }
+#timeline .mw-cell img[src$="a23.webp"] { height: 20px; }
+#timeline .mw-cell img[src$="isb.svg"] { height: 18px; }
+#timeline .mw-cell img[src$="iiit-h.webp"] { height: 26px; }
+/* lockup — taller than flat marks */
+#timeline .mw-ph { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--mut); border: 1px dashed var(--ln); padding: 3px 8px; white-space: nowrap; }
+/* IIIT-H's artwork carries the full institute name in micro-type — at wall size
+   it reads as a smudge, so it runs as a typographic chip instead. SOLID hairline
+   (a deliberate choice) vs the DASHED HDW chip (a genuinely missing file). */
+#timeline .mw-txt { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--mut); border: var(--border); padding: 3px 8px; white-space: nowrap; }
 /* ── assets/components/philosophy/philosophy.css ── */
 /* philosophy → "How I think" — 6-step operating loop (.hloop/.hstep) grouped
    under subtle industry-phase labels (.hphase: Discover / Define / Experiment /
@@ -584,7 +907,7 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
 /* ---- sticky phase rail (audit V-1b): two-column grid on desktop — loop
    left, a sticky mini-map of the 4 phases + 7 moves right. philosophy.js
    highlights the current step and the rail doubles as jump nav. ---- */
-.phi-grid { display: grid; grid-template-columns: 1fr 240px; gap: 48px; align-items: start; }
+.phi-grid { display: grid; grid-template-columns: minmax(0,1fr) 360px; gap: 64px; align-items: start; }
 .phi-main { min-width: 0; }
 .hstep { scroll-margin-top: 90px; }
 .hrail { position: sticky; top: 96px; border-left: var(--border); padding-left: 20px; }
@@ -611,6 +934,152 @@ body:has(.mmenu.open) .mscrim { opacity: 1; pointer-events: auto; }
   .hev .hln.extra { display: none; }
   .hev.exp .hln.extra { display: block; }
   .hmore { display: block; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL REFRESH (20 Jul 2026) — the loop drawn as a dial: sticky column (desktop) + sticky phase bar (mobile)
+   ══════════════════════════════════════════════════════════════════ */
+#philosophy .loopv2, #philosophy .loopv2 * { box-sizing: border-box; }
+#philosophy .fl-svg { display: block; width: 100%; height: auto; margin: 0 auto; overflow: visible; }
+#philosophy .fl-dcap { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); text-align: center; margin: var(--sp-sm) 0 0; }
+#philosophy .arc { fill: none; stroke: var(--mut); stroke-width: 1.6; stroke-linecap: round; opacity: .55; transition: stroke var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease); }
+#philosophy .arc.visited { stroke: var(--ink); opacity: .85; }
+#philosophy .arc.active { stroke: var(--acc); opacity: 1; }
+#philosophy .node-hit { fill: transparent; cursor: pointer; }
+#philosophy .node-dot { fill: var(--bg); stroke: var(--mut); stroke-width: 1.6; transition: stroke var(--dur-fast) var(--ease), stroke-width var(--dur-fast) var(--ease); }
+#philosophy .node-num { font-family: var(--font-mono); font-size: 10px; font-weight: var(--fw-medium); fill: var(--mut); text-anchor: middle; dominant-baseline: central; transition: fill var(--dur-fast) var(--ease); }
+#philosophy .node.visited .node-dot { stroke: var(--ink); }
+#philosophy .node.visited .node-num { fill: var(--ink); }
+#philosophy .node.active .node-dot { stroke: var(--acc); stroke-width: 2; }
+#philosophy .node.active .node-num { fill: var(--acc); }
+#philosophy .node:focus-visible { outline: none; }
+#philosophy .node:focus-visible .node-dot { stroke: var(--acc); stroke-width: 2.4; }
+#philosophy .arc-label { font-family: var(--font-mono); font-size: 17.5px; font-weight: var(--fw-medium); letter-spacing: .04em; fill: var(--ink); opacity: 1; transition: fill var(--dur-fast) var(--ease); }
+#philosophy .arc-label.active { fill: var(--acc); }
+#philosophy .dir-chev { fill: none; stroke: var(--mut); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#philosophy .loopback, #philosophy .loopback-head { fill: none; stroke: var(--acc); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+#philosophy .fl-center { font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; fill: var(--ink); text-anchor: middle; }
+#philosophy .fl-center tspan.eq { fill: var(--acc); }
+#philosophy .arc { stroke-dasharray: 1; stroke-dashoffset: 1; }
+#philosophy .fl-svg.drawn .arc { stroke-dashoffset: 0; transition: stroke-dashoffset 1s var(--ease), stroke var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease); }
+#philosophy .fl-fade { opacity: 0; transition: opacity .5s var(--ease) .35s; }
+#philosophy .fl-svg.drawn .fl-fade { opacity: 1; }
+#philosophy .loopback, #philosophy .loopback-head { opacity: 0; transition: opacity .4s var(--ease) .8s; }
+#philosophy .fl-svg.drawn .loopback, #philosophy .fl-svg.drawn .loopback-head { opacity: 1; }
+#philosophy .fl-svg.drawn .arc-label.active { opacity: 1; }
+#philosophy .fl-head { margin-bottom: var(--sp-lg); }
+#philosophy .fl-steps { display: flex; flex-direction: column; }
+#philosophy .fl-step { display: grid; grid-template-columns: 40px 1fr; column-gap: var(--sp-md); padding: var(--sp-lg) 0; min-height: 140px; align-content: center; border-top: var(--border); transition: opacity var(--dur-fast) var(--ease); }
+#philosophy .fl-step:first-child { border-top: none; }
+#philosophy .fl-idx { font-family: var(--font-mono); font-size: 14px; font-weight: var(--fw-medium); color: var(--mut); padding-top: 3px; }
+#philosophy .fl-phase { font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--acc-text); margin: 0 0 6px; }
+#philosophy .fl-ttl { font-size: var(--fs-lg); font-weight: var(--fw-semibold); line-height: var(--lh-snug); margin: 0; }
+#philosophy .fl-desc { font-size: var(--fs-sm); color: var(--mut); line-height: var(--lh-body); margin: 8px 0 0; max-width: 46ch; }
+#philosophy .loopv2.spy-ready .fl-step { opacity: .5; }
+#philosophy .loopv2.spy-ready .fl-step.active { opacity: 1; }
+#philosophy .fl-step.active .fl-idx { color: var(--acc); }
+@media (prefers-reduced-motion: reduce) {
+  #philosophy .arc { stroke-dashoffset: 0 !important; transition: stroke var(--dur-fast) var(--ease); }
+#philosophy .fl-fade, #philosophy .loopback, #philosophy .loopback-head { opacity: 1 !important; transition: none; }
+}
+/* desktop: sticky dial in the right column, 7 steps left */
+#philosophy .loopv2-desk .fl-grid { display: grid; gap: var(--sp-xl); align-items: start; }
+#philosophy .loopv2-desk .fl-dial { margin-bottom: var(--sp-lg); }
+#philosophy .loopv2-desk .fl-svg { max-width: 360px; }
+@media (min-width: 1000px) {
+  #philosophy .loopv2-desk .fl-grid { grid-template-columns: 1fr 360px; gap: 64px; }
+#philosophy .loopv2-desk .fl-dial { order: 2; margin-bottom: 0; position: sticky; top: 84px; align-self: start; }
+}
+/* mobile stacked instance */
+#philosophy .loopv2-stack { max-width: 640px; margin: 0 auto; }
+#philosophy .loopv2-stack .fl-eyebrow { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; margin: 0 0 10px; }
+#philosophy .loopv2-stack .fl-eyebrow .qw { color: var(--acc); }
+#philosophy .loopv2-stack .fl-eyebrow .tk { width: 6px; height: 6px; background: var(--acc); flex: none; }
+#philosophy .loopv2-stack .fl-h2 { font-size: 21px; line-height: 1.2; font-weight: var(--fw-semibold); letter-spacing: var(--tracking-tight); margin: 0; max-width: 20ch; }
+#philosophy .loopv2-stack .fl-lead { font-size: 13.5px; line-height: 1.55; color: var(--mut); margin: 10px 0 0; }
+#philosophy .loopv2-stack .fl-dial { margin: 6px 0 14px; }
+#philosophy .loopv2-stack .fl-svg { max-width: 300px; }
+#philosophy .loopv2-stack .fl-step { grid-template-columns: 34px 1fr; column-gap: 14px; padding: 20px 0; min-height: 128px; }
+#philosophy .loopv2-stack .fl-idx { font-size: 13px; }
+#philosophy .loopv2-stack .fl-ttl { font-size: 16px; }
+#philosophy .loopv2-stack .fl-desc { font-size: 13px; }
+/* H2 sticky hybrid bar: phase name left, 38px mini-dial right */
+#philosophy .lbar { position: sticky; top: 60px; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 48px; padding: 0 12px 0 4px; background: var(--bg); border-bottom: var(--border); margin: 0 0 6px; cursor: pointer; opacity: 0; transform: translateY(-6px); transition: opacity .28s var(--ease), transform .28s var(--ease); }
+#philosophy .lbar.live { opacity: 1; transform: none; }
+#philosophy .lbar:focus-visible { outline: 2px solid var(--acc); outline-offset: -2px; }
+#philosophy .lbar-left { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding-left: 10px; }
+#philosophy .lbar-name { font-family: var(--font-mono); font-size: 14px; font-weight: var(--fw-semibold); letter-spacing: .04em; color: var(--ink); line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#philosophy .lbar-right { flex: none; display: flex; align-items: center; padding-right: 4px; }
+#philosophy .lbar-right svg { display: block; overflow: visible; width: 36px; height: 36px; }
+#philosophy .lbar-tickcircle { fill: none; stroke: var(--mut); stroke-width: 1.1; opacity: .3; }
+#philosophy .lbar-tk { fill: var(--bg); stroke: var(--mut); stroke-width: 1.2; transition: fill var(--dur-fast) var(--ease), stroke var(--dur-fast) var(--ease); }
+#philosophy .lbar-tk.visited { fill: var(--ink); stroke: var(--ink); }
+#philosophy .lbar-tk.active { fill: var(--acc); stroke: var(--acc); }
+@media (prefers-reduced-motion: reduce) {
+  #philosophy .lbar { transition: none; }
+#philosophy .lbar-tk { transition: none; }
+}
+/* which instance shows at which width (ON) */
+@media (max-width: 999px) { #philosophy .loop-inst-desk { display: none; }
+}
+@media (min-width: 1000px) { #philosophy .loop-inst-mobile { display: none; }
+}
+
+/* the section already collapses to one column ≤900px — hide the dial there
+   rather than stacking a 240px graphic above seven long steps */
+
+
+/* the bar is desktop-irrelevant; it only appears once the rail is gone */
+#philosophy .lbar { display: none; }
+@media (max-width: 900px) {
+  #philosophy .lbar { display: flex; opacity: 1; transform: none; }
+  #philosophy .lbar.live { opacity: 1; transform: none; }
+}
+#philosophy .lbar-txt { display: flex; flex-direction: column; gap: 2px; line-height: 1.2; padding-left: 8px; }
+#philosophy .lbar-phase { font-size: 13.5px; font-weight: var(--fw-semibold); color: var(--ink); }
+#philosophy .lbar-step { font-family: var(--font-mono); font-size: 10px; letter-spacing: .1em; color: var(--mut); }
+#philosophy .lbar-ring { flex-shrink: 0; }
+
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL REFRESH (21 Jul 2026) — How I Think dial, matched to test-final
+   Desktop: a large (360px) sticky dial fills the grid's right column, in
+   place of the old text index. Mobile (≤960px): the dial shows once at the
+   top of the section and a sticky phase bar tracks progress below it.
+   Two dial instances (desk + mobile) are driven by one spy in
+   philosophy-loop.js; the seven real steps and their case-study receipts
+   are untouched.
+   ══════════════════════════════════════════════════════════════════ */
+#philosophy .phi-dialcol { position: sticky; top: 84px; align-self: start; }
+#philosophy .phi-dial .fl-svg { display: block; width: 100%; height: auto; overflow: visible; margin: 0 auto; }
+#philosophy .phi-dial-desk .fl-svg { max-width: 360px; }
+#philosophy .fl-dcap { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); text-align: center; margin: var(--sp-sm) 0 0; }
+#philosophy .phi-dial .node { cursor: pointer; }
+#philosophy .phi-dial .node:focus-visible { outline: none; }
+#philosophy .phi-dial .node:focus-visible .node-dot { stroke: var(--acc); stroke-width: 2.4; }
+
+#philosophy .phi-dial-mobile { display: none; }
+@media (max-width: 960px) {
+  #philosophy .phi-dialcol { display: none; }
+  #philosophy .phi-dial-mobile { display: block; max-width: 320px; margin: 8px auto 4px; }
+  #philosophy .phi-dial-mobile .fl-svg { max-width: 320px; }
+}
+
+/* ── VISUAL REFRESH (21 Jul 2026) — the step you're reading lights up ──
+   The active step sits at full strength while the other six recede, so the
+   dial and the prose agree on where you are. Gated on .spy-ready (added by
+   philosophy-loop.js) so before JS — or if it never runs — every step is at
+   full opacity and nothing is dimmed. Unlike the reference version, a step
+   also un-dims on hover/focus-within: ours carry the quote-receipt buttons,
+   and reaching for one should bring its step forward rather than leave you
+   clicking into faded text. */
+#philosophy .hloop.spy-ready .hstep { opacity: .5; transition: opacity .3s var(--ease); }
+#philosophy .hloop.spy-ready .hstep.active,
+#philosophy .hloop.spy-ready .hstep:hover,
+#philosophy .hloop.spy-ready .hstep:focus-within { opacity: 1; }
+#philosophy .hloop.spy-ready .hstep.active .hnum { color: var(--acc); }
+@media (prefers-reduced-motion: reduce) {
+  #philosophy .hloop.spy-ready .hstep { transition: none; }
 }
 
 /* ── assets/components/testimonial/testimonial.css ── */
@@ -991,6 +1460,39 @@ body:has(.mmenu.open) .seclabel { display: none; }
   100%    { background: transparent; box-shadow: -12px 0 0 transparent, 12px 0 0 transparent, -15px 0 0 transparent; }
 }
 
+
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL REFRESH (20 Jul 2026) — line-art figures that replaced the ASCII diagrams
+   ══════════════════════════════════════════════════════════════════ */
+.modal pre { background: var(--soft); border: var(--border); padding: 14px 16px; overflow-x: auto; margin: 0; max-width: 800px; }
+.modal pre code { background: none; border: none; padding: 0; font-family: var(--font-mono); font-size: 12px; line-height: 1.7; white-space: pre; color: var(--ink); }
+.dg-svgwrap { max-width: 800px; width: 100%; overflow-x: auto; }
+.dg-svgwrap svg { display: block; width: 100%; height: auto; }
+.modal svg text { font-family: var(--font-mono); }
+.dg-svgwrap .bxln, .dg-svgwrap .bxink, .dg-svgwrap .bxacc { fill: var(--card); }
+.dg-svgwrap .bxln  { stroke: var(--ln);  stroke-width: 1.6; }
+.dg-svgwrap .bxink { stroke: var(--ink); stroke-width: 1.6; }
+.dg-svgwrap .bxacc { stroke: var(--acc); stroke-width: 1.8; }
+.dg-svgwrap .eln  { stroke: var(--ln);  stroke-width: 1.6; fill: none; stroke-linecap: round; }
+.dg-svgwrap .eink { stroke: var(--ink); stroke-width: 1.6; fill: none; stroke-linecap: round; }
+.dg-svgwrap .eacc { stroke: var(--acc); stroke-width: 1.6; fill: none; stroke-linecap: round; }
+.dg-svgwrap .eaccd{ stroke: var(--acc); stroke-width: 1.4; fill: none; stroke-linecap: round; stroke-dasharray: 3 3; }
+.dg-svgwrap .zln  { stroke: var(--ln); stroke-width: 1; }
+.dg-svgwrap .dot-acc { fill: var(--acc); }
+.dg-svgwrap .dnode   { font-size: 10px;   letter-spacing: .02em; fill: var(--ink); }
+.dg-svgwrap .dsub    { font-size: 8.5px;  letter-spacing: .05em; fill: var(--mut); }
+.dg-svgwrap .dchip   { font-size: 9.5px;  letter-spacing: .08em; fill: var(--mut); }
+.dg-svgwrap .dchip-em{ font-size: 9.5px;  letter-spacing: .08em; fill: var(--ink); }
+.dg-svgwrap .dnote   { font-size: 9.5px;  letter-spacing: .02em; fill: var(--mut); }
+.dg-svgwrap .dnoteacc{ font-size: 9.5px;  letter-spacing: .02em; fill: var(--acc-text); }
+.dg-svgwrap .dzone   { font-size: 9.5px;  letter-spacing: .12em; fill: var(--mut); }
+.dg-svgwrap .dacclab { font-size: 9.5px;  letter-spacing: .04em; fill: var(--acc-text); font-weight: var(--fw-medium); }
+/* A/B: base = ON (svg shown, pre hidden) */
+.dg-svgwrap { display: block; }
+.modal pre { display: none; }
+@media (max-width: 480px) {
+  .dg-svgwrap svg { min-width: 600px; }
+}
 /* ── assets/css/utilities.css ── */
 /* ============================================================
    utilities.css — Small single-purpose helpers

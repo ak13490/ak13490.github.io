@@ -1085,19 +1085,18 @@ html.dark #timeline .mw-cell img[src$="viacom18.svg"] { filter: grayscale(1) inv
 /* ── assets/components/testimonial/testimonial.css ── */
 /* testimonial — editorial recommendation cards ("What others say").
    Each card (.ec) = a big rotated double quote-mark WATERMARK behind the text
-   (faint brand-orange fill + near-invisible gray outline), a GOLD context bar
+   (faint brand-orange fill + near-invisible gray outline), an ACCENT context bar
    naming what the person is vouching for, an italic quote body, a dashed rule,
    then name (brand accent) + role/relationship. Promoted from
    test-testimonials-editorial.html (user-approved iteration, 2026-07-12).
    Markup needs a one-time <svg><defs><path id="qpath">…</defs> in the page;
    each card carries an .ec-mark <svg> with four <use href="#qpath"> layers. */
 
-:root { --ec-gold: #E0A63C; --ec-qfill: #F9E2DB; --ec-qline: #E7E5DF; }
+:root { --ec-qfill: #F9E2DB; --ec-qline: #E7E5DF; }
 /* Dark: the old #33221D was a warm brown that read as a muddy blob on the near-black
    card rather than a watermark. A watermark should be a faint LIFT of the surface it
    sits on, so these are neutral tints of --ink instead of a colour of their own. */
-:root.dark { --ec-gold: #E0A63C;
-             --ec-qfill: color-mix(in srgb, var(--ink) 6%, transparent);
+:root.dark { --ec-qfill: color-mix(in srgb, var(--ink) 6%, transparent);
              --ec-qline: color-mix(in srgb, var(--ink) 11%, transparent); }
 
 /* items stretch (grid default) so both cards in a row share the taller card's
@@ -1127,7 +1126,11 @@ html.dark #timeline .mw-cell img[src$="viacom18.svg"] { filter: grayscale(1) inv
 /* text sits over the glyph */
 .ec-context, .ec-quote, .ec-rule, .ec-name, .ec-role { position: relative; z-index: 1; }
 
-.ec-context { border-left: 3px solid var(--ec-gold); padding-left: 18px; margin: 0 0 26px; font-style: italic; font-weight: var(--fw-semibold); font-size: 20px; line-height: 1.34; letter-spacing: -.01em; color: var(--ink); }
+/* the bar was gold (#E0A63C) until 22 Jul. It was the only gold on the entire site —
+   an orphan colour reads as an accident, and on the dark card it was the loudest thing
+   present. In the accent it bookends the card with the (accent) name at the bottom and
+   the pink quote watermark, which is already a tint of the same red. */
+.ec-context { border-left: 3px solid var(--acc); padding-left: 18px; margin: 0 0 26px; font-style: italic; font-weight: var(--fw-semibold); font-size: 20px; line-height: 1.34; letter-spacing: -.01em; color: var(--ink); }
 
 .ec-quote { margin-bottom: 28px; }
 .ec-quote p { font-style: italic; font-size: 17px; line-height: 1.72; color: var(--ink); margin: 0 0 14px; }

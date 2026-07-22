@@ -1317,8 +1317,15 @@ html.dark #timeline .mw-cell img[src$="viacom18.svg"] { filter: grayscale(1) inv
    body.past-hero (same signal as the dock), hides while the burger menu is
    open, and drops to bottom-right on mobile — clear of the contact dock. */
 
+/* The band always moves AWAY from the card, never toward it, so a card is
+   the lifted surface on every section — one rule the reader can learn.
+   Light does that by darkening. Dark used to mix toward --soft, which is the
+   same direction --card sits in: the band resolved to #1A1A17 and so does
+   --card, contrast 1.000 — the card was held up by its border alone on
+   #ai, #timeline, social proof and #contact. Mixing toward black instead
+   restores the lift (1.136) without touching the card itself. */
 :root { --tint: color-mix(in srgb, var(--ink) 3%, var(--soft)); }  /* light needs the deeper shade */
-html.dark { --tint: color-mix(in srgb, var(--soft) 65%, var(--bg)); }
+html.dark { --tint: color-mix(in srgb, #000 42%, var(--bg)); }
 
 .sec-alt { background: var(--tint); }
 
@@ -1482,11 +1489,29 @@ body:has(.mmenu.open) .seclabel { display: none; }
 }
 
 /* anchor highlight — receipt deep-links flash the exact proof line.
-   Color-only fade (no motion), so it stays acceptable under reduced-motion. */
-.modal-doc .m-hit { animation: m-hit 2.6s ease-out 1; }
+   Two pulses of a faint accent wash behind a 3px accent bar: the bar says
+   WHERE, the wash says WHAT, in one colour rather than two. (Until 22 Jul
+   this was a single 1.4s hold of a grey wash, which read as static.)
+
+   The wash is the accent mixed into --card — the modal surface — and NOT
+   into `transparent`. It has to be opaque: the -12px wash shadow paints on
+   top of the -15px accent shadow, so a translucent wash lets the bar bleed
+   through for the full 15px and it reads as a slab instead of a hairline.
+   Opaque masks it back to the intended 3px sliver. (The three anchors that
+   sit on a --soft element differ by 4/255 — not perceptible.)
+
+   Colour only, no motion, ~1 pulse/sec — an order of magnitude under the
+   3-flashes/sec threshold, so it stays acceptable under reduced-motion. */
+:root      { --hit-wash: color-mix(in srgb, var(--acc) 10%, var(--card)); }
+:root.dark { --hit-wash: color-mix(in srgb, var(--acc) 14%, var(--card)); }
+
+.modal-doc .m-hit { animation: m-hit 2.1s ease-out 1; }
 @keyframes m-hit {
-  0%, 55% { background: var(--soft); box-shadow: -12px 0 0 var(--soft), 12px 0 0 var(--soft), -15px 0 0 var(--acc); }
-  100%    { background: transparent; box-shadow: -12px 0 0 transparent, 12px 0 0 transparent, -15px 0 0 transparent; }
+  0%   { background: var(--hit-wash); box-shadow: -12px 0 0 var(--hit-wash), 12px 0 0 var(--hit-wash), -15px 0 0 var(--acc); }
+  22%  { background: transparent;     box-shadow: -12px 0 0 transparent, 12px 0 0 transparent, -15px 0 0 var(--acc); }
+  40%  { background: var(--hit-wash); box-shadow: -12px 0 0 var(--hit-wash), 12px 0 0 var(--hit-wash), -15px 0 0 var(--acc); }
+  72%  { background: var(--hit-wash); box-shadow: -12px 0 0 var(--hit-wash), 12px 0 0 var(--hit-wash), -15px 0 0 var(--acc); }
+  100% { background: transparent;     box-shadow: -12px 0 0 transparent, 12px 0 0 transparent, -15px 0 0 transparent; }
 }
 
 

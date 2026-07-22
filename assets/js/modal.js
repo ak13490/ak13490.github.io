@@ -48,7 +48,7 @@
     requestAnimationFrame(function () {
       place(smooth ? 'smooth' : 'auto');
       el.classList.add('m-hit');
-      setTimeout(function () { el.classList.remove('m-hit'); }, 2600);
+      setTimeout(function () { el.classList.remove('m-hit'); }, 2100);   /* == animation length */
       setTimeout(function () {                       // image-load layout correction
         if (!overlay.classList.contains('open')) return;
         var off = el.getBoundingClientRect().top - scroll.getBoundingClientRect().top;
